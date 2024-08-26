@@ -1,0 +1,77 @@
+.background-W {
+    background-color: rgb(198, 226, 233, 0.7);
+  
+  }
+  
+  .background-SB {
+    background-color: rgb(200, 246, 201, 0.7);
+  }
+  
+  .background-LB {
+    background-color: rgb(191, 91, 240, 0.7);
+  }
+  
+  .background-W,
+  .background-SB,
+  .background-LB {
+    transition: background-color 1s ease;
+  }
+  
+  .btnCont {
+    display: flex;
+    justify-content: center;
+    width: 90%;
+  }
+  
+  .button-52 {
+    font-size: 16px;
+    font-weight: 200;
+    letter-spacing: 1px;
+    padding: 13px 20px 13px;
+    outline: 0;
+    border: 1px solid black;
+    cursor: pointer;
+    position: relative;
+    background-color: rgba(0, 0, 0, 0);
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    margin: 5px;
+  }
+  
+  .button-52:after {
+    content: "";
+    background-color: #fdfdac;
+    width: 100%;
+    z-index: -1;
+    position: absolute;
+    height: 100%;
+    top: 7px;
+    left: 7px;
+    transition: top 0.2s ease, left 0.2s ease;
+  }
+  
+  .button-52:hover:after {
+    top: 0px;
+    left: 0px;
+  }
+  
+  @media (max-width: 767px) {
+    .button-52:active:after {
+      top: 0px;
+      left: 0px;
+    }
+  
+    .button-52:not(:active):after {
+      top: 7px;
+      left: 7px;
+    }
+  }
+  
+  
+  @media (min-width: 768px) {
+    .button-52 {
+      padding: 13px 50px 13px;
+    }
+  }
+  
