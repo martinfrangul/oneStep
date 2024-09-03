@@ -8,7 +8,8 @@
   }
   
   .background-LB {
-    background-color: rgb(191, 91, 240, 0.7);
+    background-color: rgb(242, 111, 109, 0.7);
+    color: white;
   }
   
   .background-W,
@@ -37,6 +38,7 @@
     -webkit-user-select: none;
     touch-action: manipulation;
     margin: 5px;
+    color: black;
   }
   
   .button-52:after {

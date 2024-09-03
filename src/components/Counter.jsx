@@ -109,7 +109,7 @@ function Counter() {
   }, [seconds, playPause, minutes, started, counterLap]);
 
   return (
-    <div className="flex w-full justify-center xl:justify-start">
+    <div className="flex w-full justify-center">
         <div
           className={`flex flex-col justify-center w-fit items-center m-auto mx-3 mt-6 p-5 rounded-2xl z-10 ${bgColor} shadow-lg`}
         >
