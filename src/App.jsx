@@ -4,10 +4,14 @@ import Counter from "./components/Counter";
 import TaskManager from "./components/TaskManager";
 import { TasksDataProvider } from "./context/TasksData";
 import TaskPanel from "./components/TaskPanel";
+import { CounterContextProvider } from "./context/CounterContext";
 
 const App = () => {
+
+  
   return (
     <TasksDataProvider>
+      <CounterContextProvider>
       <div className="flex flex-col justify-start items-center w-full min-h-screen h-full bg-backgroundSM xl:bg-backgroundLG bg-cover bg-repeat-y bg-center">
         <Navbar />
         <div className="flex flex-col lg:flex-row w-full h-full justify-between">
@@ -20,6 +24,7 @@ const App = () => {
           </div>
         </div>
       </div>
+      </CounterContextProvider>
     </TasksDataProvider>
   );
 };

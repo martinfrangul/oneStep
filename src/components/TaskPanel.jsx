@@ -44,7 +44,7 @@ const TaskPanel = () => {
               ${
                 task.completed
                   ? "line-through text-btnControl font-semibold opacity-85"
-                  : "text-btnControl font-semibold"
+                  : "text-btnControl font-semibold px-2"
               }`}
           >
             {task.text}

@@ -1,5 +1,6 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import "../styles/Counter.css";
+import { CounterContext } from "../context/CounterContext";
 
 function Counter() {
   /////////////// STATE ///////////////
@@ -7,66 +8,65 @@ function Counter() {
   const [seconds, setSeconds] = useState(0);
   const [minutes, setMinutes] = useState(25);
   const [playPause, setPlayPause] = useState(false);
-  const [mode, setMode] = useState("work");
   const [started, setStarted] = useState(false);
-  const [counterLap, setCounterLap] = useState(4);
   const [bgColor, setBgColor] = useState("background-W");
 
-  const work = () => {
-    setMode("work");
-    setMinutes(25);
-    setBgColor("background-W");
+  const context = useContext(CounterContext);
+  const { mode, setMode, counterLap, setCounterLap } = context;
+
+  // Object to define modes and their properties
+  const modes = {
+    work: { minutes: 25, bgColor: "background-W" },
+    shortBreak: { minutes: 5, bgColor: "background-SB" },
+    longBreak: { minutes: 15, bgColor: "background-LB" },
   };
 
-  const shortBreak = () => {
-    setMode("shortBreak");
-    setMinutes(5);
-    setBgColor("background-SB");
-  };
+  useEffect(() => {
+    // Update mode when component mounts or mode changes
+    setModeHandler(mode);
+  }, [mode]);
 
-  const longBreak = () => {
-    setMode("longBreak");
-    setMinutes(15);
-    setBgColor("background-LB");
-    setCounterLap(4);
+  // Function to handle mode changes
+  const setModeHandler = (newMode) => {
+    setMode(newMode);
+    setMinutes(modes[newMode].minutes);
+    setBgColor(modes[newMode].bgColor);
+    if (newMode === "longBreak") {
+      setCounterLap(4);
+    }
   };
 
   ////////////// HANDLERS //////////////
 
   const onStartHandler = () => {
+    if (!started) {
+      setStarted(true);
+    }
     setPlayPause(!playPause);
   };
 
   const onResetHandler = () => {
-    if (mode === "work") {
-      work();
-    }
-
-    if (mode === "shortBreak") {
-      shortBreak();
-    }
-
-    if (mode === "longBreak") {
-      longBreak();
-    }
+    setModeHandler("work");
     setSeconds(0);
     setPlayPause(false);
     setStarted(false);
+    setCounterLap(4);
   };
 
   const onSkipHandler = () => {
     setSeconds(0);
     setPlayPause(false);
     setStarted(false);
-    if (mode !== "work") {
-      work();
-      setPlayPause(false);
-    } else if (mode === "work" && (counterLap - 1) > 0) {
-      shortBreak();
-      setCounterLap((prev) => prev - 1);
-      setPlayPause(false);
-    } else {
-      longBreak();
+
+    if (mode === "work") {
+      if (counterLap > 1) {
+        setCounterLap((prev) => prev - 1);
+        setModeHandler("shortBreak");
+      } else {
+        setModeHandler("longBreak");
+      }
+    } else if (mode === "shortBreak" || mode === "longBreak") {
+      setModeHandler("work");
     }
   };
 
@@ -75,25 +75,23 @@ function Counter() {
   useEffect(() => {
     let intervalId;
 
-    if (playPause) {
-      setStarted(true);
+    if (playPause && started) {
       intervalId = setInterval(() => {
         if (seconds > 0) {
-          setSeconds(seconds - 1);
+          setSeconds((prev) => prev - 1);
         } else if (minutes > 0) {
-          setMinutes(minutes - 1);
+          setMinutes((prev) => prev - 1);
           setSeconds(59);
         } else {
-          if (mode !== "work") {
-            work();
-            setPlayPause(false);
-          } else if (mode === "work" && (counterLap - 1) > 0) {
-            shortBreak();
-            setCounterLap((prev) => prev - 1);
-            setPlayPause(false);
+          if (mode === "work") {
+            if (counterLap > 1) {
+              setCounterLap((prev) => prev - 1);
+              setModeHandler("shortBreak");
+            } else {
+              setModeHandler("longBreak");
+            }
           } else {
-            longBreak();
-            setPlayPause(false);
+            setModeHandler("work");
           }
         }
       }, 1000);
@@ -101,33 +99,30 @@ function Counter() {
       clearInterval(intervalId);
     }
 
-    return () => {
-      clearInterval(intervalId);
-    };
-
+    return () => clearInterval(intervalId);
     // eslint-disable-next-line
-  }, [seconds, playPause, minutes, started, counterLap]);
+  }, [playPause, seconds, minutes, started, counterLap, mode]);
 
   return (
     <div className="flex w-full justify-center">
-        <div
-          className={`flex flex-col justify-center w-fit items-center m-auto mx-3 mt-6 p-5 rounded-2xl z-10 ${bgColor} shadow-lg`}
-        >
-          <h2 className="text-5xl">
-            {minutes}:{seconds < 10 ? `0${seconds}` : seconds}
-          </h2>
-          <div className="btnCont">
-            <button className="button-52" onClick={onStartHandler}>
-              {playPause ? "PAUSE" : "PLAY"}
-            </button>
-            <button className="button-52" onClick={onResetHandler}>
-              RESET
-            </button>
-            <button className="button-52" onClick={onSkipHandler}>
-              SKIP
-            </button>
-          </div>
+      <div
+        className={`flex flex-col justify-center w-fit items-center m-auto mx-3 mt-6 p-5 rounded-2xl z-10 ${bgColor} shadow-lg`}
+      >
+        <h2 className="text-5xl">
+          {minutes}:{seconds < 10 ? `0${seconds}` : seconds}
+        </h2>
+        <div className="btnCont">
+          <button className="button-52" onClick={onStartHandler}>
+            {playPause ? "PAUSE" : "PLAY"}
+          </button>
+          <button className="button-52" onClick={onResetHandler}>
+            RESET
+          </button>
+          <button className="button-52" onClick={onSkipHandler}>
+            SKIP
+          </button>
         </div>
+      </div>
     </div>
   );
 }
