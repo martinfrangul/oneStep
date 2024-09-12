@@ -71,6 +71,15 @@ const ConfigCounter = () => {
     }
   };
 
+  const handleResetDefault = () => {
+    setTempWorkMinutes(workMinutes);
+    setTempSRMinutes(SRMinutes);
+    setTempLRMinutes(LRMinutes);
+    setTempCounterLap(counterLap);
+    setErrors({});
+
+  }
+
   const changeWorkHandler = (value) => {
     setTempWorkMinutes(value === "" ? "" : parseInt(value));
   };
@@ -90,7 +99,17 @@ const ConfigCounter = () => {
   return (
     <dialog id="my_modal_1" className="modal" ref={dialogRef}>
       <div className="modal-box bg-white p-6 rounded-lg shadow-lg max-w-sm mx-auto">
-        <h2 className="text-lg font-semibold mb-4">Configuration</h2>
+        <div className="flex flex-row justify-between">
+          <h2 className="text-lg font-semibold mb-4">Configuration</h2>
+          <button
+            type="button"
+            onClick={handleResetDefault}
+            className="flex justify-center font-semibold items-center p-3 btn-sm btn-active bg-bgW text-black rounded-md"
+          >
+            Default values
+          </button>
+        </div>
+
 
         <label htmlFor="user-work" className="block text-sm font-medium text-gray-700">Work</label>
         <input
