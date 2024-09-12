@@ -18,12 +18,6 @@
     transition: background-color 1s ease;
   }
   
-  .btnCont {
-    display: flex;
-    justify-content: center;
-    width: 90%;
-  }
-  
   .button-52 {
     font-size: 16px;
     font-weight: 200;
@@ -58,7 +52,7 @@
     left: 0px;
   }
   
-  @media (max-width: 767px) {
+  @media (max-width: 1024px) {
     .button-52:active:after {
       top: 0px;
       left: 0px;
@@ -71,7 +65,7 @@
   }
   
   
-  @media (min-width: 768px) {
+  @media (min-width: 1024px) {
     .button-52 {
       padding: 13px 50px 13px;
     }

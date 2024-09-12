@@ -12,7 +12,7 @@ export default {
       },
       // PERSONALIZE YOUR COLORS HERE!
       colors: {
-        primary: "#",
+        primary: "#FFC1BD",
         secondary: "#C8E8E3",
         textLogo: "#155263",
         bgW: "#D8D8DD",
