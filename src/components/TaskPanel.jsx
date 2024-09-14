@@ -7,13 +7,13 @@ import "../styles/TaskPanel.css"
 const TaskPanel = () => {
   const context = useContext(TasksData);
 
-  const { tasks, setTasks, setArchivedTasks } = context;
+  const { tasks, setTasks, setCompletedTask } = context;
 
   const [fadingOut, setFadingOut] = useState(null);
 
-  const archiveTask = (id) => {
+  const completeTask = (id) => {
     const newArchivedTask = tasks.find((task) => task.id === id);
-    setArchivedTasks((prevTasks) => [
+    setCompletedTask((prevTasks) => [
       ...prevTasks,
       { ...newArchivedTask, completed: true },
     ]);
@@ -49,7 +49,7 @@ const TaskPanel = () => {
               {task.text}
             </div>
             <button
-              onClick={() => archiveTask(task.id)}
+              onClick={() => completeTask(task.id)}
               className="mr-2 p-2 bg-btnControl rounded-full text-textLogo lg:hover:bg-gray-600 lg:hover:text-btnControl transition-colors duration-300"
             >
               <CheckIcon className="h-5 w-5" />

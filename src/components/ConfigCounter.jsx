@@ -97,7 +97,7 @@ const ConfigCounter = () => {
   };
 
   return (
-    <dialog id="my_modal_1" className="modal" ref={dialogRef}>
+    <dialog id="config-modal" className="modal" ref={dialogRef}>
       <div className="modal-box bg-white p-6 rounded-lg shadow-lg max-w-sm mx-auto">
         <div className="flex flex-row justify-between">
           <h2 className="text-lg font-semibold mb-4">Configuration</h2>
