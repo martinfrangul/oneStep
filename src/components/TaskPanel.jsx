@@ -7,13 +7,13 @@ import "../styles/TaskPanel.css"
 const TaskPanel = () => {
   const context = useContext(TasksData);
 
-  const { tasks, setTasks, setCompletedTask } = context;
+  const { tasks, setTasks, setCompletedTasks } = context;
 
   const [fadingOut, setFadingOut] = useState(null);
 
   const completeTask = (id) => {
     const newArchivedTask = tasks.find((task) => task.id === id);
-    setCompletedTask((prevTasks) => [
+    setCompletedTasks((prevTasks) => [
       ...prevTasks,
       { ...newArchivedTask, completed: true },
     ]);

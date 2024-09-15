@@ -5,12 +5,12 @@ const TasksData = createContext();
 
 const TasksDataProvider = ({ children }) => {
   const [tasks, setTasks] = useState([]);
-  const [completedTask, setCompletedTask] = useState([]);
+  const [completedTasks, setCompletedTasks] = useState([]);
 
   return (
     <TasksData.Provider
       value={{
-        tasks, setTasks, completedTask, setCompletedTask
+        tasks, setTasks, completedTasks, setCompletedTasks
       }}
     >
       {children}
