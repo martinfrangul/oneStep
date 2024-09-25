@@ -1,8 +1,10 @@
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/solid';
 import ReactHowler from 'react-howler';
 import { CounterContext } from '../context/CounterContext';
+import PropTypes from 'prop-types';
+import alertSound from '../assets/sounds/alert.mp3';
 
 const Alert = ({ showAlert, setShowAlert, message, }) => {
 
@@ -51,13 +53,19 @@ const { soundToggle } = context;
       </div>
 
       <ReactHowler
-        src="/src/assets/sounds/alert.mp3"
+        src={alertSound}
         playing={showAlert && soundToggle} 
         loop={false} 
         volume={1.0}
       />
     </Transition>
   );
+};
+
+Alert.propTypes = {
+  showAlert: PropTypes.bool.isRequired,
+  setShowAlert: PropTypes.func.isRequired,
+  message: PropTypes.string.isRequired,
 };
 
 export default Alert;
