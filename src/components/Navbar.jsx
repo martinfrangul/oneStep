@@ -1,4 +1,4 @@
-import logo from "../assets/logoOneStep.png";
+import logo from "../assets/images/logoOneStep.png";
 import { useContext } from "react";
 import { CounterContext } from "../context/CounterContext";
 

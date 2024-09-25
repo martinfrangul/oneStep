@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import "../styles/Counter.css";
 import { CounterContext } from "../context/CounterContext";
+import Alert from "./Alert";
 
 function Counter() {
   const { mode, setMode, counterLap, setCounterLap, modes, initialCounterLap, } =
@@ -12,6 +13,8 @@ function Counter() {
   const [playPause, setPlayPause] = useState(false);
   const [started, setStarted] = useState(false);
   const [bgColor, setBgColor] = useState(modes[mode].bgColor);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState('');
 
   useEffect(() => {
     setSeconds(0);
@@ -46,17 +49,21 @@ function Counter() {
     setSeconds(0);
     setPlayPause(false);
     setStarted(false);
-    
+    setShowAlert(true)
 
     if (mode === "work") {
       if (counterLap > 1) {
+        setAlertMessage('Good job! Have a short rest!')
         setCounterLap((prev) => prev - 1);
         setModeHandler("shortBreak");
       } else {
+        setAlertMessage("Great work! Let's have a long rest now!")
+
         setModeHandler("longBreak");
         setCounterLap(initialCounterLap);
       }
     } else if (mode === "shortBreak" || mode === "longBreak") {
+      setAlertMessage('Time to get back to work!')
       setModeHandler("work");
     }
   };
@@ -87,6 +94,12 @@ function Counter() {
 
   return (
     <div className="flex w-full justify-center">
+       <Alert
+        showAlert={showAlert}
+        setShowAlert={setShowAlert}
+        message={alertMessage}
+      />
+
       <div
         className={`flex flex-col justify-center w-11/12 items-center m-auto mt-6 p-6 rounded-2xl z-10 ${bgColor} shadow-lg`}
       >

@@ -7,8 +7,8 @@ export default {
   theme: {
     extend: {
       backgroundImage: {
-        backgroundSM: "url('/src/assets/bg-app-sm.jpg')",
-        backgroundLG: "url('/src/assets/bg-app-lg.jpg')",
+        backgroundSM: "url('/src/assets/images/bg-app-sm.jpg')",
+        backgroundLG: "url('/src/assets/images/bg-app-lg.jpg')",
       },
       // PERSONALIZE YOUR COLORS HERE!
       colors: {

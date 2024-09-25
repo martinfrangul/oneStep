@@ -10,6 +10,7 @@ const CounterContextProvider = ({ children }) => {
   const [workMinutes, setWorkMinutes] = useState(25);
   const [SRMinutes, setSRkMinutes] = useState(5);
   const [LRMinutes, setLRMinutes] = useState(15);
+  const [soundToggle, setSoundToggle] = useState(true);
 
   const modes = {
     work: { minutes: workMinutes, bgColor: "background-W" },
@@ -33,6 +34,8 @@ const CounterContextProvider = ({ children }) => {
         LRMinutes,
         initialCounterLap,
         setInitialCounterLap,
+        soundToggle,
+        setSoundToggle,
       }}
     >
       {children}
