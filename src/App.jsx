@@ -10,6 +10,7 @@ import CompletedTasks from "./components/CompletedTasks";
 import ConfigCounterButton from "./components/buttons/ConfigCounterButton";
 import CompletedTasksButton from "./components/buttons/CompletedTasksButton";
 import SoundToggleButton from "./components/buttons/SoundToggleButton";
+import { AlertContextProvider } from "./context/AlertContext";
 
 const App = () => {
   return (
@@ -22,12 +23,16 @@ const App = () => {
           <Navbar />
           <div className="flex flex-col lg:flex-row w-full h-full justify-between">
             <div className="flex flex-col lg:w-6/12 h-full justify-start items-center gap-3">
-              <Counter />
-              <div className="flex w-full justify-center items-center gap-4">
-                <ConfigCounterButton />
-                <CompletedTasksButton />
-                <SoundToggleButton />
-              </div>
+              <AlertContextProvider>
+                <Counter />
+
+                <div className="flex w-full justify-center items-center gap-4">
+                  <ConfigCounterButton />
+                  <CompletedTasksButton />
+                  <SoundToggleButton />
+                </div>
+              </AlertContextProvider>
+
               <TaskManager />
             </div>
             <div className="flex justify-center lg:items-start w-10/12 md:w-6/12 pt-5 lg:pt-14 lg:m-0 m-auto">

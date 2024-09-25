@@ -2,13 +2,13 @@ import { useContext } from 'react';
 import { Transition } from '@headlessui/react';
 import { XMarkIcon } from '@heroicons/react/24/solid';
 import ReactHowler from 'react-howler';
-import { CounterContext } from '../context/CounterContext';
+import { AlertContext } from '../context/AlertContext';
 import PropTypes from 'prop-types';
 import alertSound from '../assets/sounds/alert.mp3';
 
-const Alert = ({ showAlert, setShowAlert, message, }) => {
+const Alert = ({ showAlert, setShowAlert, message }) => {
 
-const context = useContext(CounterContext)
+const context = useContext(AlertContext)
 
 const { soundToggle } = context;
 

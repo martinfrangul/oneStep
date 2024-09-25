@@ -1,14 +1,20 @@
-import { useContext } from "react";
-import { CounterContext } from "../../context/CounterContext";
+import { useContext, useCallback } from "react";
+import { AlertContext } from "../../context/AlertContext";
 
 const SoundToggleButton = () => {
-  const context = useContext(CounterContext);
+  const context = useContext(AlertContext);
   const { setSoundToggle, soundToggle } = context;
+  
+
+  const handleToggle = useCallback(() => {
+    setSoundToggle(prev => !prev);
+  }, [setSoundToggle]);
 
   return (
-    <button className="btn" onClick={() => setSoundToggle(!soundToggle)}>
+    <div className="hidden lg:block"> {/* Oculta el div en pantallas pequeñas y medianas */}
+    <button className="btn" onClick={handleToggle}>
       {soundToggle && <svg
-        className="w-6 h-6 text-gray-800 dark:text-white"
+        className="w-6 h-6 text-gray-800"
         aria-hidden="true"
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -26,7 +32,7 @@ const SoundToggleButton = () => {
       </svg>}
 
       {!soundToggle && <svg
-        className="w-6 h-6 text-gray-800 dark:text-white"
+        className="w-6 h-6 text-gray-800"
         aria-hidden="true"
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -43,6 +49,7 @@ const SoundToggleButton = () => {
         />
       </svg>}
     </button>
+    </div>
   );
 };
 
