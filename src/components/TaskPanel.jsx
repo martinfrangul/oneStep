@@ -31,7 +31,7 @@ const TaskPanel = () => {
 
   return (
     <div className="min-w-[15rem] lg:w-2/4">
-      <ul className="lg:flex lg:flex-col lg:justify-center lg:items-start space-y-5">
+      <ul className="lg:flex lg:flex-col lg:justify-center lg:items-start space-y-5 mb-5">
         {tasks.map((task) => (
           <motion.li
             key={task.id}

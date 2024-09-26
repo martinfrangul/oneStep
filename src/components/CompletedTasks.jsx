@@ -26,7 +26,7 @@ const CompletedTasks = () => {
           {completedTasks.length !== 0 ? (
             completedTasks.slice(-8).map((task, index) => (
               <div
-                className="flex flex-row items-center gap-2 font-semibold text-xl"
+                className="flex flex-row items-center gap-2 font-semibold text-xl p-1 border-b-[0.5px] borde-solid border-black"
                 key={index}
               >
                 <h1>{task.text}</h1>

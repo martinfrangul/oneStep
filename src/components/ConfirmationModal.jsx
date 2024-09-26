@@ -36,7 +36,7 @@ const ConfirmationModal = ({ completedTasksDialogRef }) => {
             </h2>
           </div>
           <div className="w-full">
-            <h3 className="text-md mb-4">This accion can not be undone.</h3>
+            <h3 className="text-md mb-4">This action cannot be undone.</h3>
           </div>
         </div>
         <div className="modal-action flex justify-end gap-4 mt-6">
