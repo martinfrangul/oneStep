@@ -49,7 +49,6 @@ function Counter() {
     setSeconds(0);
     setPlayPause(false);
     setStarted(false);
-    setShowAlert(true)
 
     if (mode === "work") {
       if (counterLap > 1) {

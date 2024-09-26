@@ -7,93 +7,95 @@ const ConfigCounter = () => {
     counterLap,
     setCounterLap,
     setWorkMinutes,
-    setSRkMinutes,
+    setSRMinutes,
     setLRMinutes,
     workMinutes,
     SRMinutes,
     LRMinutes,
-    setInitialCounterLap
+    setInitialCounterLap,
+    initialCounterLap
   } = context;
 
-  const [tempWorkMinutes, setTempWorkMinutes] = useState(workMinutes);
-  const [tempSRMinutes, setTempSRMinutes] = useState(SRMinutes);
-  const [tempLRMinutes, setTempLRMinutes] = useState(LRMinutes);
-  const [tempCounterLap, setTempCounterLap] = useState(counterLap);
-
   const [errors, setErrors] = useState({});
-
   const dialogRef = useRef(null);
 
   const handleAccept = () => {
     const validationErrors = {};
 
-    if (!tempWorkMinutes || isNaN(tempWorkMinutes) || tempWorkMinutes <= 0) {
+    // Validación de los minutos de trabajo
+    if (!workMinutes || isNaN(workMinutes) || workMinutes <= 0) {
       validationErrors.workMinutes = "Please enter a valid work time.";
     }
 
-    if (!tempSRMinutes || isNaN(tempSRMinutes) || tempSRMinutes <= 0) {
+    // Validación de los minutos de descanso corto
+    if (!SRMinutes || isNaN(SRMinutes) || SRMinutes <= 0) {
       validationErrors.SRMinutes = "Please enter a valid short rest time.";
     }
 
-    if (!tempLRMinutes || isNaN(tempLRMinutes) || tempLRMinutes <= 0) {
+    // Validación de los minutos de descanso largo
+    if (!LRMinutes || isNaN(LRMinutes) || LRMinutes <= 0) {
       validationErrors.LRMinutes = "Please enter a valid long rest time.";
     }
 
-    if (!tempCounterLap || isNaN(tempCounterLap) || tempCounterLap <= 0) {
+    // Validación del intervalo de vueltas
+    if (!counterLap || isNaN(counterLap) || counterLap <= 0) {
       validationErrors.counterLap = "Please enter a valid lap interval.";
     }
 
+    // Si hay errores, los establece
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
 
-    // Si no hay errores, actualiza los valores
-    setWorkMinutes(tempWorkMinutes);
-    setSRkMinutes(tempSRMinutes);
-    setLRMinutes(tempLRMinutes);
-    setCounterLap(tempCounterLap);
-    setInitialCounterLap(tempCounterLap);
+    // Aquí se actualizan los valores directamente
+    setWorkMinutes(workMinutes);
+    setSRMinutes(SRMinutes);
+    setLRMinutes(LRMinutes);
+    setCounterLap(counterLap);
+    setInitialCounterLap(counterLap);
     setErrors({});
+
     if (dialogRef.current) {
       dialogRef.current.close();
     }
   };
 
   const handleCancel = () => {
-    setTempWorkMinutes(workMinutes);
-    setTempSRMinutes(SRMinutes);
-    setTempLRMinutes(LRMinutes);
-    setTempCounterLap(counterLap);
     setErrors({});
     if (dialogRef.current) {
       dialogRef.current.close();
     }
   };
 
-  const handleResetDefault = () => {
-    setTempWorkMinutes(workMinutes);
-    setTempSRMinutes(SRMinutes);
-    setTempLRMinutes(LRMinutes);
-    setTempCounterLap(counterLap);
-    setErrors({});
+  const defaultWorkMinutes = 25;
+  const defaultSRMinutes = 5;
+  const defaultLRMinutes = 15;
+  const defaultCounterLap = 4;
 
-  }
+  const handleResetDefault = () => {
+    setWorkMinutes(defaultWorkMinutes);
+    setSRMinutes(defaultSRMinutes);
+    setLRMinutes(defaultLRMinutes);
+    setCounterLap(defaultCounterLap);
+    setInitialCounterLap(defaultCounterLap);
+    setErrors({});
+  };
 
   const changeWorkHandler = (value) => {
-    setTempWorkMinutes(value === "" ? "" : parseInt(value));
+    setWorkMinutes(value === "" ? "" : parseInt(value));
   };
 
   const changeSRHandler = (value) => {
-    setTempSRMinutes(value === "" ? "" : parseInt(value));
+    setSRMinutes(value === "" ? "" : parseInt(value));
   };
 
   const changeLRHandler = (value) => {
-    setTempLRMinutes(value === "" ? "" : parseInt(value));
+    setLRMinutes(value === "" ? "" : parseInt(value));
   };
 
   const changeLapHandler = (value) => {
-    setTempCounterLap(value === "" ? "" : parseInt(value));
+    setCounterLap(value === "" ? "" : parseInt(value));
   };
 
   return (
@@ -110,12 +112,11 @@ const ConfigCounter = () => {
           </button>
         </div>
 
-
         <label htmlFor="user-work" className="block text-sm font-medium text-gray-700">Work</label>
         <input
           id="user-work"
           type="number"
-          value={tempWorkMinutes}
+          value={workMinutes}
           onChange={(e) => changeWorkHandler(e.target.value)}
           className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-500 ${errors.workMinutes ? "border-red-500" : "border-gray-300"}`}
         />
@@ -125,7 +126,7 @@ const ConfigCounter = () => {
         <input
           id="user-SR"
           type="number"
-          value={tempSRMinutes}
+          value={SRMinutes}
           onChange={(e) => changeSRHandler(e.target.value)}
           className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-500 ${errors.SRMinutes ? "border-red-500" : "border-gray-300"}`}
         />
@@ -135,7 +136,7 @@ const ConfigCounter = () => {
         <input
           id="user-LR"
           type="number"
-          value={tempLRMinutes}
+          value={LRMinutes}
           onChange={(e) => changeLRHandler(e.target.value)}
           className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-500 ${errors.LRMinutes ? "border-red-500" : "border-gray-300"}`}
         />
@@ -145,7 +146,7 @@ const ConfigCounter = () => {
         <input
           id="counter-lap"
           type="number"
-          value={tempCounterLap}
+          value={initialCounterLap}
           onChange={(e) => changeLapHandler(e.target.value)}
           className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-500 ${errors.counterLap ? "border-red-500" : "border-gray-300"}`}
         />
