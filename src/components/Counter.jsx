@@ -81,6 +81,7 @@ function Counter() {
           setSeconds(59);
         } else {
           onSkipHandler();
+          setShowAlert(true)
         }
       }, 1000);
     } else {
