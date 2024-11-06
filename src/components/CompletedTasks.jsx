@@ -3,15 +3,12 @@ import { TasksData } from "../context/TasksData";
 import ConfirmationModal from "../components/ConfirmationModal";
 
 const CompletedTasks = () => {
-  const context = useContext(TasksData);
-  const { completedTasks } = context;
+  const { completedTasks } = useContext(TasksData);
 
   const dialogRef = useRef(null);
 
   const handleClose = () => {
-    if (dialogRef.current) {
-      dialogRef.current.close();
-    }
+    dialogRef.current?.close();
   };
 
   return (
@@ -33,19 +30,22 @@ const CompletedTasks = () => {
               </div>
             ))
           ) : (
-            <h1 className="italic text-center p-6 bg-white">No completed tasks yet</h1>
+            <h1 className="italic text-center p-6 bg-white">
+              No completed tasks yet
+            </h1>
           )}
         </div>
         <div className="modal-action mt-1 flex justify-end gap-4 p-6 bg-white">
-          <button
-            className="btn border-2 border-bgLR bg-transparent text-red-500 hover:bg-opacity-50"
-            onClick={() =>
-              document.getElementById("confirmation-modal").showModal()
-            }
-            disabled={completedTasks.length === 0}
-          >
-            Delete all
-          </button>
+          {completedTasks.length > 0 && (
+            <button
+              className="btn border-2 border-bgLR bg-transparent text-red-500 hover:bg-opacity-50"
+              onClick={() =>
+                document.getElementById("confirmation-modal").showModal()
+              }
+            >
+              Delete all
+            </button>
+          )}
           <button
             type="button"
             onClick={handleClose}
