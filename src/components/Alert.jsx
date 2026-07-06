@@ -1,12 +1,26 @@
-import { useContext } from 'react';
+import { useContext, useState, useEffect } from 'react';
 import { Transition } from '@headlessui/react';
 import { BellRing, X } from 'lucide-react';
 import ReactHowler from 'react-howler';
 import { AlertContext } from '../context/AlertContext';
-import alertSound from '../assets/sounds/alert.mp3';
+
+import soundBell from '../assets/sounds/bell.mp3';
+import soundChimes from '../assets/sounds/chimes.mp3';
+import soundBeep from '../assets/sounds/beep.mp3';
+import soundEscalate from '../assets/sounds/escalate.mp3';
+import soundConstant from '../assets/sounds/constant.mp3';
+
+const SOUNDS = {
+  bell: soundBell,
+  chimes: soundChimes,
+  beep: soundBeep,
+  escalate: soundEscalate,
+  constant: soundConstant,
+};
 
 const Alert = () => {
-  const { showAlert, setShowAlert, alertMessage, soundToggle, onConfirm, setOnConfirm } = useContext(AlertContext);
+  const { showAlert, setShowAlert, alertMessage, soundToggle, onConfirm, setOnConfirm, selectedSound } = useContext(AlertContext);
+  const [playingSound, setPlayingSound] = useState(false);
 
   const handleClose = () => {
     setShowAlert(false);
@@ -15,6 +29,21 @@ const Alert = () => {
       setOnConfirm(null);
     }
   };
+
+  useEffect(() => {
+    if (showAlert && soundToggle) {
+      setPlayingSound(true);
+      // Auto silence after 3 seconds
+      const timer = setTimeout(() => {
+        setPlayingSound(false);
+      }, 3000);
+      return () => clearTimeout(timer);
+    } else {
+      setPlayingSound(false);
+    }
+  }, [showAlert, soundToggle]);
+
+  const currentSoundFile = SOUNDS[selectedSound] || soundBell;
 
   return (
     <Transition
@@ -70,8 +99,8 @@ const Alert = () => {
       </div>
 
       <ReactHowler
-        src={alertSound}
-        playing={showAlert && soundToggle} 
+        src={currentSoundFile}
+        playing={playingSound} 
         loop={false} 
         volume={1.0}
       />

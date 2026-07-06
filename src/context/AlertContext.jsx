@@ -9,6 +9,14 @@ const AlertContextProvider = ({ children }) => {
   const [showAlert, setShowAlert] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
   const [onConfirm, setOnConfirm] = useState(null);
+  const [selectedSound, setSelectedSound] = useState(() => {
+    return localStorage.getItem("oneStep_selectedSound") || "bell";
+  });
+
+  const handleSetSelectedSound = (sound) => {
+    setSelectedSound(sound);
+    localStorage.setItem("oneStep_selectedSound", sound);
+  };
 
   return (
     <AlertContext.Provider
@@ -22,7 +30,9 @@ const AlertContextProvider = ({ children }) => {
         alertMessage,
         setAlertMessage,
         onConfirm,
-        setOnConfirm
+        setOnConfirm,
+        selectedSound,
+        setSelectedSound: handleSetSelectedSound
       }}
     >
       {children}

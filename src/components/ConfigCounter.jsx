@@ -1,8 +1,24 @@
 import { useContext, useState, useRef } from "react";
 import { CounterContext } from "../context/CounterContext";
+import { AlertContext } from "../context/AlertContext";
+
+import soundBell from "../assets/sounds/bell.mp3";
+import soundChimes from "../assets/sounds/chimes.mp3";
+import soundBeep from "../assets/sounds/beep.mp3";
+import soundEscalate from "../assets/sounds/escalate.mp3";
+import soundConstant from "../assets/sounds/constant.mp3";
+
+const SOUND_FILES = {
+  bell: soundBell,
+  chimes: soundChimes,
+  beep: soundBeep,
+  escalate: soundEscalate,
+  constant: soundConstant,
+};
 
 const ConfigCounter = () => {
   const context = useContext(CounterContext);
+  const { selectedSound, setSelectedSound } = useContext(AlertContext);
   const {
     counterLap,
     setCounterLap,
@@ -18,6 +34,15 @@ const ConfigCounter = () => {
 
   const [errors, setErrors] = useState({});
   const dialogRef = useRef(null);
+  const previewAudioRef = useRef(null);
+
+  const stopPreview = () => {
+    if (previewAudioRef.current) {
+      previewAudioRef.current.pause();
+      previewAudioRef.current.currentTime = 0;
+      previewAudioRef.current = null;
+    }
+  };
 
   const handleAccept = () => {
     const validationErrors = {};
@@ -49,6 +74,7 @@ const ConfigCounter = () => {
     setCounterLap(counterLap);
     setInitialCounterLap(counterLap);
     setErrors({});
+    stopPreview();
 
     if (dialogRef.current) {
       dialogRef.current.close();
@@ -57,6 +83,7 @@ const ConfigCounter = () => {
 
   const handleCancel = () => {
     setErrors({});
+    stopPreview();
     if (dialogRef.current) {
       dialogRef.current.close();
     }
@@ -169,6 +196,43 @@ const ConfigCounter = () => {
               }`}
             />
             {errors.counterLap && <p className="mt-1 text-red-500 text-xs">{errors.counterLap}</p>}
+          </div>
+
+          <div>
+            <label htmlFor="sound-select" className="block text-xs font-semibold uppercase tracking-wider text-stone-500 mb-1.5">
+              Alarm Sound
+            </label>
+            <select
+              id="sound-select"
+              value={selectedSound}
+              onChange={(e) => {
+                const val = e.target.value;
+                setSelectedSound(val);
+                
+                // Stop any previous preview sound
+                stopPreview();
+
+                // Play the new preview
+                const audio = new Audio(SOUND_FILES[val]);
+                audio.volume = 0.4;
+                previewAudioRef.current = audio;
+                audio.play().catch((err) => console.log("Audio preview blocked: ", err));
+
+                // Auto stop after 3 seconds
+                setTimeout(() => {
+                  if (previewAudioRef.current === audio) {
+                    stopPreview();
+                  }
+                }, 3000);
+              }}
+              className="block w-full px-4 py-2.5 bg-stone-100/70 text-stone-800 border border-stone-200 rounded-2xl focus:outline-none focus:border-stone-400 transition-all duration-200 text-sm font-medium cursor-pointer"
+            >
+              <option value="bell">🛎️ Classic Bell</option>
+              <option value="chimes">🎐 Gentle Chimes</option>
+              <option value="beep">📟 Digital Beep</option>
+              <option value="escalate">📈 Escalating Alert</option>
+              <option value="constant">🚨 Constant Tone</option>
+            </select>
           </div>
         </div>
 
