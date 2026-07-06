@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["turbopack:///[project]/src/styles/TaskPanel.css"],"sourcesContent":[".break-words-with-hyphen {\n  word-break: break-word;\n  overflow-wrap: break-word;\n  hyphens: auto;\n}"],"names":[],"mappings":"AAAA"}}]
-}
