@@ -23,6 +23,28 @@ const VisualTimer = ({ mode, minutes, seconds, totalMinutes, playPause }) => {
   const stickTipX = stickBaseX + stickMaxLenX * progress;
   const stickTipY = stickBaseY - stickMaxLenY * progress;
 
+  // Ash calculation: falls off every 33% burned
+  const fallInterval = 0.33;
+  const burned = 1 - progress;
+  const ashPortion = burned % fallInterval;
+  const ashTipProgress = Math.min(1, progress + ashPortion);
+  const ashTipX = stickBaseX + stickMaxLenX * ashTipProgress;
+  const ashTipY = stickBaseY - stickMaxLenY * ashTipProgress;
+  const currentAshIndex = Math.floor(burned / fallInterval);
+  
+  // Coordinates for the currently falling piece
+  const fallProgressBottom = 1 - currentAshIndex * fallInterval;
+  const fallProgressTop = 1 - (currentAshIndex - 1) * fallInterval;
+  const fallBottomX = stickBaseX + stickMaxLenX * fallProgressBottom;
+  const fallBottomY = stickBaseY - stickMaxLenY * fallProgressBottom;
+  const fallTopX = stickBaseX + stickMaxLenX * fallProgressTop;
+  const fallTopY = stickBaseY - stickMaxLenY * fallProgressTop;
+
+  // Tea Cup calculations
+  const teaY = 148 - (148 - 106) * progress;
+  const liquidLeft = 87 - (87 - 75) * progress;
+  const liquidRight = 113 + (125 - 113) * progress;
+
   // Flicker animation variants for the candle flame
   const flameVariants = {
     flicker: {
@@ -49,6 +71,12 @@ const VisualTimer = ({ mode, minutes, seconds, totalMinutes, playPause }) => {
         className="w-full h-full"
         xmlns="http://www.w3.org/2000/svg"
       >
+        <defs>
+          <clipPath id="cup-interior">
+            <path d="M 74 102 C 74 102, 76 148, 87 148 L 113 148 C 124 148, 126 102, 126 102 Z" />
+          </clipPath>
+        </defs>
+
         {/* WORK MODE: CANDLE */}
         {mode === "work" && (
           <g>
@@ -105,12 +133,12 @@ const VisualTimer = ({ mode, minutes, seconds, totalMinutes, playPause }) => {
               className="text-theme-text"
             />
 
-            {/* Flame */}
-            {playPause && (
+            {/* Flame (Always rendered if there is time remaining; freezes on pause) */}
+            {progress > 0 && (
               <motion.g
                 transform-origin="100px 150px"
                 variants={flameVariants}
-                animate="flicker"
+                animate={playPause ? "flicker" : "paused"}
                 style={{ originX: "100px", originY: `${candleY - 9}px` }}
               >
                 {/* Flame Outer Glow */}
@@ -136,10 +164,10 @@ const VisualTimer = ({ mode, minutes, seconds, totalMinutes, playPause }) => {
               </motion.g>
             )}
 
-            {/* Small smoke trail if paused */}
-            {!playPause && progress < 1 && (
+            {/* Small smoke trail when candle finishes completely */}
+            {progress === 0 && (
               <motion.path
-                d={`M 100 ${candleY - 12} Q 96 ${candleY - 22} 104 ${candleY - 32} T 98 ${candleY - 48}`}
+                d={`M 100 ${candleY - 9} Q 96 ${candleY - 19} 104 ${candleY - 29} T 98 ${candleY - 45}`}
                 fill="none"
                 stroke="currentColor"
                 strokeWidth="1.5"
@@ -153,8 +181,8 @@ const VisualTimer = ({ mode, minutes, seconds, totalMinutes, playPause }) => {
           </g>
         )}
 
-        {/* BREAK MODES: INCENSE */}
-        {(mode === "shortBreak" || mode === "longBreak") && (
+        {/* SHORT BREAK MODE: INCENSE */}
+        {mode === "shortBreak" && (
           <g>
             {/* Incense Burner / Bowl */}
             <path
@@ -175,95 +203,219 @@ const VisualTimer = ({ mode, minutes, seconds, totalMinutes, playPause }) => {
               className="text-theme-text"
             />
 
-            {/* Incense Stick (Ash/Consumed part) */}
-            {progress < 1 && (
-              <motion.line
+            {/* Incense Stick (Ash/Consumed part) - Grows as it burns, falls every 33% */}
+            {progress < 1 && ashPortion > 0.005 && (
+              <line
                 x1={stickTipX}
                 y1={stickTipY}
-                x2={stickBaseX + stickMaxLenX}
-                y2={stickBaseY - stickMaxLenY}
-                initial={{ x1: stickBaseX + stickMaxLenX, y1: stickBaseY - stickMaxLenY }}
-                animate={{ x1: stickTipX, y1: stickTipY }}
+                x2={ashTipX}
+                y2={ashTipY}
                 stroke="currentColor"
                 strokeWidth="2.5"
-                strokeDasharray="2 3"
                 strokeLinecap="round"
-                className="text-theme-text opacity-30"
-                transition={{ duration: 0.5, ease: "easeOut" }}
+                className="text-theme-text opacity-25"
               />
             )}
 
-            {/* Incense Stick (Unconsumed part) */}
-            <motion.line
+            {/* Falling Ash Animation (Triggers when currentAshIndex changes) */}
+            {currentAshIndex > 0 && progress > 0 && (
+              <motion.line
+                key={`falling-ash-${currentAshIndex}`}
+                x1={fallBottomX}
+                y1={fallBottomY}
+                x2={fallTopX}
+                y2={fallTopY}
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                className="text-theme-text"
+                initial={{ opacity: 0.25, y: 0, x: 0, rotate: 0 }}
+                animate={
+                  playPause
+                    ? { opacity: 0, y: 60, x: -15, rotate: -25 }
+                    : { opacity: 0.25, y: 0, x: 0, rotate: 0 }
+                }
+                transition={
+                  playPause
+                    ? { duration: 1.5, ease: "easeIn" }
+                    : { duration: 0 }
+                }
+                style={{ originX: `${fallBottomX}px`, originY: `${fallBottomY}px` }}
+              />
+            )}
+
+            {/* Incense Stick (Unconsumed part) - Shrinks as it burns */}
+            <line
               x1={stickBaseX}
               y1={stickBaseY}
-              initial={{ x2: stickBaseX, y2: stickBaseY }}
-              animate={{ x2: stickTipX, y2: stickTipY }}
+              x2={stickTipX}
+              y2={stickTipY}
               stroke="currentColor"
               strokeWidth="2.5"
               strokeLinecap="round"
               className="text-theme-text"
-              transition={{ duration: 0.5, ease: "easeOut" }}
             />
 
-            {/* Glowing Red Ember at the tip */}
-            {playPause && progress > 0 && (
+            {/* Glowing Red Ember Aura (Incandescent Glow) */}
+            {progress > 0 && (
               <motion.circle
-                r="3"
+                cx={stickTipX}
+                cy={stickTipY}
                 fill="var(--theme-accent)"
-                initial={{ cx: stickBaseX, cy: stickBaseY }}
+                className="opacity-40 blur-[1.5px]"
                 animate={{
-                  cx: stickTipX,
-                  cy: stickTipY,
-                  scale: [1, 1.3, 1],
-                  opacity: [0.8, 1, 0.8],
+                  r: playPause ? [6, 9, 6] : 6,
                 }}
                 transition={{
-                  cx: { duration: 0.5, ease: "easeOut" },
-                  cy: { duration: 0.5, ease: "easeOut" },
-                  scale: { duration: 1.2, repeat: Infinity, ease: "easeInOut" },
-                  opacity: { duration: 1.2, repeat: Infinity, ease: "easeInOut" },
+                  r: playPause ? { duration: 1.2, repeat: Infinity, ease: "easeInOut" } : { duration: 0.2 },
                 }}
               />
             )}
 
-            {/* Wavy Smoke rising from the ember */}
-            {playPause && progress > 0 && (
-              <g>
-                <motion.path
-                  d={`M ${stickTipX} ${stickTipY} 
-                      Q ${stickTipX - 10} ${stickTipY - 20} ${stickTipX} ${stickTipY - 40} 
-                      T ${stickTipX + 5} ${stickTipY - 75}`}
+            {/* Glowing Red Ember at the tip */}
+            {progress > 0 && (
+              <motion.circle
+                cx={stickTipX}
+                cy={stickTipY}
+                fill="var(--theme-accent)"
+                animate={{
+                  r: playPause ? [3.5, 4.5, 3.5] : 3.5,
+                  opacity: playPause ? [0.8, 1, 0.8] : 0.9,
+                }}
+                transition={{
+                  r: playPause ? { duration: 1.2, repeat: Infinity, ease: "easeInOut" } : { duration: 0.2 },
+                  opacity: playPause ? { duration: 1.2, repeat: Infinity, ease: "easeInOut" } : { duration: 0.2 },
+                }}
+              />
+            )}
+
+            {/* Wavy Smoke rising from the ember (freezes on pause) */}
+            {progress > 0 && (
+              <g transform={`translate(${stickTipX}, ${stickTipY})`}>
+                <path
+                  d="M 0 0 Q -10 -20 0 -40 T 5 -75"
                   fill="none"
                   stroke="currentColor"
                   strokeWidth="2"
                   strokeLinecap="round"
-                  className="text-theme-text opacity-40"
-                  initial={{ strokeDasharray: "120", strokeDashoffset: 120 }}
-                  animate={{ strokeDashoffset: 0, opacity: [0.1, 0.4, 0] }}
-                  transition={{
-                    duration: 3.5,
-                    repeat: Infinity,
-                    ease: "linear",
-                  }}
+                  className="text-theme-text opacity-40 animate-smoke-1"
+                  style={{ animationPlayState: playPause ? "running" : "paused" }}
                 />
-                <motion.path
-                  d={`M ${stickTipX} ${stickTipY} 
-                      Q ${stickTipX + 12} ${stickTipY - 18} ${stickTipX - 3} ${stickTipY - 36} 
-                      T ${stickTipX - 8} ${stickTipY - 68}`}
+                <path
+                  d="M 0 0 Q 12 -18 -3 -36 T -8 -68"
                   fill="none"
                   stroke="currentColor"
                   strokeWidth="1.5"
                   strokeLinecap="round"
-                  className="text-theme-text opacity-30"
-                  initial={{ strokeDasharray: "100", strokeDashoffset: 100 }}
-                  animate={{ strokeDashoffset: 0, opacity: [0.05, 0.3, 0] }}
-                  transition={{
-                    duration: 4.2,
-                    delay: 1.5,
-                    repeat: Infinity,
-                    ease: "linear",
-                  }}
+                  className="text-theme-text opacity-30 animate-smoke-2"
+                  style={{ animationPlayState: playPause ? "running" : "paused" }}
+                />
+              </g>
+            )}
+          </g>
+        )}
+
+        {/* LONG BREAK MODE: TEA CUP */}
+        {mode === "longBreak" && (
+          <g>
+            {/* Saucer / Plate */}
+            <path
+              d="M 60 155 C 60 155, 100 168, 140 155"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="3"
+              strokeLinecap="round"
+              className="text-theme-text opacity-90"
+            />
+
+            {/* Tea Liquid (levels down with progress) */}
+            {progress > 0 && (
+              <rect
+                x="70"
+                y={teaY}
+                width="60"
+                height={150 - teaY}
+                fill="currentColor"
+                className="text-theme-candle opacity-80"
+                clipPath="url(#cup-interior)"
+              />
+            )}
+
+            {/* Tea Liquid Surface Line */}
+            {progress > 0 && (
+              <line
+                x1={liquidLeft}
+                y1={teaY}
+                x2={liquidRight}
+                y2={teaY}
+                stroke="currentColor"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+                className="text-theme-text opacity-90"
+              />
+            )}
+
+            {/* Tea Cup Body */}
+            <path
+              d="M 72 100 L 128 100 C 128 100, 126 150, 114 150 L 86 150 C 74 150, 72 100, 72 100 Z"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="3"
+              strokeLinejoin="round"
+              className="text-theme-text"
+            />
+
+            {/* Handle */}
+            <path
+              d="M 126 112 C 142 112, 142 138, 126 138"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="3"
+              strokeLinecap="round"
+              className="text-theme-text"
+            />
+
+            {/* Tea bag string & tag (loops over the rim) */}
+            <path
+              d="M 88 105 Q 78 90 70 102 L 64 118"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.5"
+              className="text-theme-text opacity-70"
+            />
+            <rect
+              x="60"
+              y="118"
+              width="8"
+              height="10"
+              rx="1"
+              fill="currentColor"
+              stroke="currentColor"
+              strokeWidth="1"
+              className="text-theme-candle"
+              style={{ stroke: "var(--theme-text)" }}
+            />
+
+            {/* Steam rising (only if progress > 0, freezes on pause) */}
+            {progress > 0 && (
+              <g>
+                <path
+                  d="M 92 92 Q 86 78 94 65 T 90 45"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  className="text-theme-text opacity-40 animate-steam-1"
+                  style={{ animationPlayState: playPause ? "running" : "paused" }}
+                />
+                <path
+                  d="M 108 92 Q 114 78 106 65 T 110 48"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                  className="text-theme-text opacity-30 animate-steam-2"
+                  style={{ animationPlayState: playPause ? "running" : "paused" }}
                 />
               </g>
             )}

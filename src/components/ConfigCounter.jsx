@@ -228,10 +228,7 @@ const ConfigCounter = () => {
               className="block w-full px-4 py-2.5 bg-stone-100/70 text-stone-800 border border-stone-200 rounded-2xl focus:outline-none focus:border-stone-400 transition-all duration-200 text-sm font-medium cursor-pointer"
             >
               <option value="bell">🛎️ Classic Bell</option>
-              <option value="chimes">🎐 Gentle Chimes</option>
-              <option value="beep">📟 Digital Beep</option>
-              <option value="escalate">📈 Escalating Alert</option>
-              <option value="constant">🚨 Constant Tone</option>
+              <option value="chimes">🔔 Tibetan Bell</option>
             </select>
           </div>
         </div>
