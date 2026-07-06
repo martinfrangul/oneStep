@@ -260,6 +260,8 @@ const VisualTimer = ({ mode, minutes, seconds, totalMinutes, playPause }) => {
               <motion.circle
                 cx={stickTipX}
                 cy={stickTipY}
+                r={6}
+                initial={{ r: 6 }}
                 fill="var(--theme-accent)"
                 className="opacity-40 blur-[1.5px]"
                 animate={{
@@ -276,6 +278,9 @@ const VisualTimer = ({ mode, minutes, seconds, totalMinutes, playPause }) => {
               <motion.circle
                 cx={stickTipX}
                 cy={stickTipY}
+                r={3.5}
+                opacity={0.9}
+                initial={{ r: 3.5, opacity: 0.9 }}
                 fill="var(--theme-accent)"
                 animate={{
                   r: playPause ? [3.5, 4.5, 3.5] : 3.5,

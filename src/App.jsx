@@ -27,19 +27,21 @@ const App = () => {
               {/* Grid Layout for Timer and Tasks */}
               <div className="w-full flex flex-col lg:flex-row gap-8 items-start justify-center mt-4">
                 
-                {/* Timer & Task Creator Section */}
-                <div className="w-full lg:w-1/2 flex flex-col items-center gap-6">
+                {/* Timer Section (Left column on desktop) */}
+                <div className="w-full lg:w-1/2 flex flex-col items-center">
                   <Counter />
-                  <TaskManager />
                 </div>
 
-                {/* Tasks List Panel */}
+                {/* Unified Focus Checklist Card (Right column on desktop) */}
                 <div className="w-full lg:w-1/2 flex flex-col gap-6">
                   <div className="p-6 rounded-3xl bg-theme-card border border-theme-ui/30 shadow-2xl transition-all duration-300">
                     <h2 className="text-xl font-semibold mb-4 tracking-tight">
                       Focus Checklist
                     </h2>
-                    <TaskPanel />
+                    <TaskManager inline={true} />
+                    <div className="mt-6 border-t border-theme-ui/10 pt-6">
+                      <TaskPanel />
+                    </div>
                   </div>
                 </div>
 
