@@ -3,24 +3,25 @@ import { TasksData } from "../context/TasksData";
 import ConfirmationModal from "../components/ConfirmationModal";
 
 const CompletedTasks = () => {
-  const context = useContext(TasksData);
-  const { completedTasks } = context;
+  const { completedTasks } = useContext(TasksData);
 
   const dialogRef = useRef(null);
 
   const handleClose = () => {
-    if (dialogRef.current) {
-      dialogRef.current.close();
-    }
+    dialogRef.current?.close();
   };
 
   return (
-    <dialog id="completed-tasks-modal" className="modal backdrop:backdrop-blur-md backdrop:bg-black/25" ref={dialogRef}>
+    <dialog
+      id="completed-tasks-modal"
+      className="modal backdrop:backdrop-blur-md backdrop:bg-black/25"
+      ref={dialogRef}
+    >
       <div className="modal-box bg-[#FDFCFB]/98 text-stone-800 border border-stone-200/80 shadow-2xl p-6 rounded-3xl max-w-sm mx-auto">
         <h2 className="text-xl font-semibold mb-4 tracking-tight">
           Completed Tasks
         </h2>
-        
+
         <div className="flex flex-col gap-2 max-h-60 overflow-y-auto my-4 pr-1">
           {completedTasks.length !== 0 ? (
             completedTasks.slice(-8).map((task, index) => (
@@ -37,7 +38,7 @@ const CompletedTasks = () => {
             </div>
           )}
         </div>
-        
+
         <div className="modal-action flex justify-between gap-4 mt-6">
           <button
             className="px-4 py-2 rounded-full border border-red-500/20 text-red-500 hover:bg-red-500/10 text-xs font-semibold disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200"
@@ -48,7 +49,7 @@ const CompletedTasks = () => {
           >
             Clear History
           </button>
-          
+
           <button
             type="button"
             onClick={handleClose}
@@ -57,7 +58,7 @@ const CompletedTasks = () => {
             Close
           </button>
         </div>
-        
+
         <ConfirmationModal completedTasksDialogRef={dialogRef} />
       </div>
     </dialog>
