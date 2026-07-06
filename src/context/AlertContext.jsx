@@ -6,12 +6,23 @@ const AlertContext = createContext();
 const AlertContextProvider = ({ children }) => {
   const [soundToggle, setSoundToggle] = useState(false);
   const [soundConsent, setSoundConsent] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
+  const [onConfirm, setOnConfirm] = useState(null);
 
   return (
     <AlertContext.Provider
       value={{
         soundToggle,
-        setSoundToggle,soundConsent, setSoundConsent
+        setSoundToggle,
+        soundConsent,
+        setSoundConsent,
+        showAlert,
+        setShowAlert,
+        alertMessage,
+        setAlertMessage,
+        onConfirm,
+        setOnConfirm
       }}
     >
       {children}

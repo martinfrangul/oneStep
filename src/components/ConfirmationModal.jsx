@@ -28,7 +28,7 @@ const ConfirmationModal = ({ completedTasksDialogRef }) => {
 
   return (
     <dialog id="confirmation-modal" className="modal backdrop:backdrop-blur-md backdrop:bg-black/25" ref={dialogRef}>
-      <div className="modal-box bg-[#FDFCFB]/98 text-stone-800 border border-stone-200/80 shadow-2xl p-6 rounded-3xl max-w-sm mx-auto">
+      <div className="modal-box bg-[#FDFCFB] bg-opacity-95 text-stone-800 border border-stone-200/80 shadow-2xl p-6 rounded-3xl max-w-sm mx-auto">
         <h2 className="text-lg font-semibold tracking-tight mb-2">
           Clear tasks history?
         </h2>

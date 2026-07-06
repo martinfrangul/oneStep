@@ -1,16 +1,20 @@
 import { useContext } from 'react';
 import { Transition } from '@headlessui/react';
-import { XMarkIcon } from '@heroicons/react/24/solid';
+import { BellRing, X } from 'lucide-react';
 import ReactHowler from 'react-howler';
 import { AlertContext } from '../context/AlertContext';
-import PropTypes from 'prop-types';
 import alertSound from '../assets/sounds/alert.mp3';
 
-const Alert = ({ showAlert, setShowAlert, message }) => {
+const Alert = () => {
+  const { showAlert, setShowAlert, alertMessage, soundToggle, onConfirm, setOnConfirm } = useContext(AlertContext);
 
-const context = useContext(AlertContext)
-
-const { soundToggle } = context;
+  const handleClose = () => {
+    setShowAlert(false);
+    if (onConfirm) {
+      onConfirm();
+      setOnConfirm(null);
+    }
+  };
 
   return (
     <Transition
@@ -24,29 +28,42 @@ const { soundToggle } = context;
       leaveTo="opacity-0 scale-95"
     >
       <div className="fixed inset-0 flex items-center justify-center p-4 sm:p-0 z-50">
-        <div className="fixed inset-0 bg-gray-500 bg-opacity-75" onClick={() => setShowAlert(false)} />
+        {/* Backdrop overlay with blur */}
+        <div 
+          className="fixed inset-0 bg-black/25 backdrop-blur-md transition-opacity" 
+          onClick={handleClose} 
+        />
 
-        <div className="bg-white rounded-lg overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full">
-          <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-            <div className="sm:flex sm:items-start">
-              <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-                <XMarkIcon className="h-6 w-6 text-red-600" aria-hidden="true" />
-              </div>
-              <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
-                <h3 className="text-lg leading-6 font-medium text-gray-900">¡Alerta!</h3>
-                <div className="mt-2">
-                  <p className="text-sm text-gray-500">{message}</p>
-                </div>
-              </div>
+        {/* Modal card */}
+        <div className="bg-[#FDFCFB] bg-opacity-95 text-stone-800 border border-stone-200/80 rounded-3xl overflow-hidden shadow-2xl transform transition-all sm:max-w-md sm:w-full z-10 p-6 relative">
+          <button
+            onClick={handleClose}
+            className="absolute top-4 right-4 p-1.5 rounded-full bg-stone-100 hover:bg-stone-200 text-stone-500 hover:text-stone-700 transition-all duration-200"
+            aria-label="Close alert"
+          >
+            <X className="h-4 w-4" />
+          </button>
+
+          <div className="flex flex-col items-center text-center mt-2">
+            {/* Alarm Icon */}
+            <div className="flex items-center justify-center h-14 w-14 rounded-full bg-stone-100 text-stone-700 mb-4 animate-bounce">
+              <BellRing className="h-7 w-7" />
             </div>
-          </div>
-          <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+
+            <h3 className="text-xl font-semibold tracking-tight mb-2">
+              {"Time's up!"}
+            </h3>
+            
+            <p className="text-sm text-stone-500 leading-relaxed max-w-xs mb-6">
+              {alertMessage}
+            </p>
+
             <button
               type="button"
-              className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
-              onClick={() => setShowAlert(false)}
+              className="w-full sm:w-auto px-6 py-2.5 bg-stone-800 hover:bg-stone-900 text-white rounded-full text-sm font-semibold transition-all duration-200 shadow-md shadow-stone-800/10"
+              onClick={handleClose}
             >
-              Cerrar
+              Okay, got it
             </button>
           </div>
         </div>
@@ -60,12 +77,6 @@ const { soundToggle } = context;
       />
     </Transition>
   );
-};
-
-Alert.propTypes = {
-  showAlert: PropTypes.bool.isRequired,
-  setShowAlert: PropTypes.func.isRequired,
-  message: PropTypes.string.isRequired,
 };
 
 export default Alert;

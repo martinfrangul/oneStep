@@ -2,15 +2,17 @@ import { motion } from "framer-motion";
 import PropTypes from "prop-types";
 
 const VisualTimer = ({ mode, minutes, seconds, totalMinutes, playPause }) => {
-  // Calculate progress (from 1 to 0)
+  // Calculate progress (from 1 to 0) and clamp it between 0 and 1
   const totalSeconds = totalMinutes * 60;
   const currentSeconds = minutes * 60 + seconds;
-  const progress = totalSeconds > 0 ? currentSeconds / totalSeconds : 0;
+  const rawProgress = totalSeconds > 0 ? currentSeconds / totalSeconds : 0;
+  const progress = Math.min(1, Math.max(0, rawProgress));
 
   // Candle height limits
   const maxCandleHeight = 90;
   const minCandleHeight = 15;
-  const candleHeight = minCandleHeight + (maxCandleHeight - minCandleHeight) * progress;
+  const candleHeight =
+    minCandleHeight + (maxCandleHeight - minCandleHeight) * progress;
   const candleY = 160 - candleHeight;
 
   // Incense stick limits (slanted stick from bottom-left to top-right)
@@ -175,46 +177,52 @@ const VisualTimer = ({ mode, minutes, seconds, totalMinutes, playPause }) => {
 
             {/* Incense Stick (Ash/Consumed part) */}
             {progress < 1 && (
-              <line
+              <motion.line
                 x1={stickTipX}
                 y1={stickTipY}
                 x2={stickBaseX + stickMaxLenX}
                 y2={stickBaseY - stickMaxLenY}
+                initial={{ x1: stickBaseX + stickMaxLenX, y1: stickBaseY - stickMaxLenY }}
+                animate={{ x1: stickTipX, y1: stickTipY }}
                 stroke="currentColor"
                 strokeWidth="2.5"
                 strokeDasharray="2 3"
                 strokeLinecap="round"
                 className="text-theme-text opacity-30"
+                transition={{ duration: 0.5, ease: "easeOut" }}
               />
             )}
 
             {/* Incense Stick (Unconsumed part) */}
-            <line
+            <motion.line
               x1={stickBaseX}
               y1={stickBaseY}
-              x2={stickTipX}
-              y2={stickTipY}
+              initial={{ x2: stickBaseX, y2: stickBaseY }}
+              animate={{ x2: stickTipX, y2: stickTipY }}
               stroke="currentColor"
               strokeWidth="2.5"
               strokeLinecap="round"
               className="text-theme-text"
+              transition={{ duration: 0.5, ease: "easeOut" }}
             />
 
             {/* Glowing Red Ember at the tip */}
             {playPause && progress > 0 && (
               <motion.circle
-                cx={stickTipX}
-                cy={stickTipY}
                 r="3"
                 fill="var(--theme-accent)"
+                initial={{ cx: stickBaseX, cy: stickBaseY }}
                 animate={{
+                  cx: stickTipX,
+                  cy: stickTipY,
                   scale: [1, 1.3, 1],
                   opacity: [0.8, 1, 0.8],
                 }}
                 transition={{
-                  duration: 1.2,
-                  repeat: Infinity,
-                  ease: "easeInOut",
+                  cx: { duration: 0.5, ease: "easeOut" },
+                  cy: { duration: 0.5, ease: "easeOut" },
+                  scale: { duration: 1.2, repeat: Infinity, ease: "easeInOut" },
+                  opacity: { duration: 1.2, repeat: Infinity, ease: "easeInOut" },
                 }}
               />
             )}

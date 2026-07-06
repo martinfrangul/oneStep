@@ -7,6 +7,7 @@ import TaskPanel from "./components/TaskPanel";
 import { CounterContextProvider } from "./context/CounterContext";
 import ConfigCounter from "./components/ConfigCounter";
 import CompletedTasks from "./components/CompletedTasks";
+import Alert from "./components/Alert";
 import { AlertContextProvider } from "./context/AlertContext";
 
 const App = () => {
@@ -16,6 +17,7 @@ const App = () => {
         <CounterContextProvider>
           <ConfigCounter />
           <CompletedTasks />
+          <Alert />
 
           <div className="flex flex-col min-h-screen w-full transition-all duration-300">
             <Navbar />

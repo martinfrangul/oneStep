@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import "../styles/Counter.css";
 import { CounterContext } from "../context/CounterContext";
-import Alert from "./Alert";
+import { AlertContext } from "../context/AlertContext";
 import VisualTimer from "./VisualTimer";
 import { Play, Pause, RotateCcw, SkipForward } from "lucide-react";
 
@@ -15,13 +15,13 @@ function Counter() {
     initialCounterLap,
   } = useContext(CounterContext);
 
+  const { setShowAlert, setAlertMessage, setOnConfirm } = useContext(AlertContext);
+
   /////////////// STATE ///////////////
   const [seconds, setSeconds] = useState(0);
   const [minutes, setMinutes] = useState(modes[mode].minutes);
   const [playPause, setPlayPause] = useState(false);
   const [started, setStarted] = useState(false);
-  const [showAlert, setShowAlert] = useState(false);
-  const [alertMessage, setAlertMessage] = useState("");
 
   useEffect(() => {
     setSeconds(0);
@@ -71,6 +71,38 @@ function Counter() {
     }
   };
 
+  const triggerNextModeAlert = () => {
+    setPlayPause(false);
+    setStarted(false);
+
+    let msg = "";
+    let nextMode = "";
+    let nextLaps = counterLap;
+
+    if (mode === "work") {
+      if (counterLap > 1) {
+        msg = "Good job! Have a short rest!";
+        nextMode = "shortBreak";
+        nextLaps = counterLap - 1;
+      } else {
+        msg = "Great work! Let's have a long rest now!";
+        nextMode = "longBreak";
+        nextLaps = initialCounterLap;
+      }
+    } else {
+      msg = "Time to get back to work!";
+      nextMode = "work";
+    }
+
+    setAlertMessage(msg);
+    setOnConfirm(() => () => {
+      setSeconds(0);
+      setCounterLap(nextLaps);
+      setModeHandler(nextMode);
+    });
+    setShowAlert(true);
+  };
+
   //////////// COUNTER /////////////////
 
   useEffect(() => {
@@ -84,8 +116,7 @@ function Counter() {
           setMinutes((prev) => prev - 1);
           setSeconds(59);
         } else {
-          onSkipHandler();
-          setShowAlert(true);
+          triggerNextModeAlert();
         }
       }, 1000);
     } else {
@@ -101,11 +132,6 @@ function Counter() {
 
   return (
     <div className="flex flex-col items-center w-full max-w-md px-6 py-8 rounded-3xl bg-theme-card border border-theme-ui/30 shadow-2xl transition-all duration-300">
-      <Alert
-        showAlert={showAlert}
-        setShowAlert={setShowAlert}
-        message={alertMessage}
-      />
 
       {/* Mode selectors inside the card for concentration */}
       <div className="flex justify-center gap-1 p-1 bg-theme-ui/40 rounded-full w-fit mb-6 text-sm">
