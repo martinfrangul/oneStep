@@ -136,7 +136,6 @@ const VisualTimer = ({ mode, minutes, seconds, totalMinutes, playPause }) => {
             {/* Flame (Always rendered if there is time remaining; freezes on pause) */}
             {progress > 0 && (
               <motion.g
-                transform-origin="100px 150px"
                 variants={flameVariants}
                 animate={playPause ? "flicker" : "paused"}
                 style={{ originX: "100px", originY: `${candleY - 9}px` }}

@@ -58,9 +58,7 @@ const ConfirmationModal = ({ completedTasksDialogRef }) => {
 };
 
 ConfirmationModal.propTypes = {
-  completedTasksDialogRef: PropTypes.shape({
-    current: PropTypes.instanceOf(Element)
-  }).isRequired,
+  completedTasksDialogRef: PropTypes.object.isRequired,
 };
 
 export default ConfirmationModal;

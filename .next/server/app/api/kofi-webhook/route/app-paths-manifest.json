@@ -1,0 +1,3 @@
+{
+  "/api/kofi-webhook/route": "app/api/kofi-webhook/route.js"
+}

@@ -2,11 +2,11 @@ import { useContext, useState, useRef } from "react";
 import { CounterContext } from "../context/CounterContext";
 import { AlertContext } from "../context/AlertContext";
 
-import soundBell from "../assets/sounds/bell.mp3";
-import soundChimes from "../assets/sounds/chimes.mp3";
-import soundBeep from "../assets/sounds/beep.mp3";
-import soundEscalate from "../assets/sounds/escalate.mp3";
-import soundConstant from "../assets/sounds/constant.mp3";
+const soundBell = "/assets/sounds/bell.mp3";
+const soundChimes = "/assets/sounds/chimes.mp3";
+const soundBeep = "/assets/sounds/beep.mp3";
+const soundEscalate = "/assets/sounds/escalate.mp3";
+const soundConstant = "/assets/sounds/constant.mp3";
 
 const SOUND_FILES = {
   bell: soundBell,

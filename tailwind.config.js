@@ -3,12 +3,15 @@
 import daisyui from "daisyui";
 
 export default {
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  content: [
+    "./app/**/*.{js,ts,jsx,tsx}",
+    "./src/**/*.{js,ts,jsx,tsx}"
+  ],
   theme: {
     extend: {
       backgroundImage: {
-        backgroundSM: "url('/src/assets/images/bg-app-sm.jpg')",
-        backgroundLG: "url('/src/assets/images/bg-app-lg.jpg')",
+        backgroundSM: "url('/assets/images/bg-app-sm.jpg')",
+        backgroundLG: "url('/assets/images/bg-app-lg.jpg')",
       },
       // PERSONALIZE YOUR COLORS HERE!
       colors: {
