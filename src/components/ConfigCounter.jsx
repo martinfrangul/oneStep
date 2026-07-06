@@ -22,33 +22,27 @@ const ConfigCounter = () => {
   const handleAccept = () => {
     const validationErrors = {};
 
-    // Validación de los minutos de trabajo
     if (!workMinutes || isNaN(workMinutes) || workMinutes <= 0) {
       validationErrors.workMinutes = "Please enter a valid work time.";
     }
 
-    // Validación de los minutos de descanso corto
     if (!SRMinutes || isNaN(SRMinutes) || SRMinutes <= 0) {
       validationErrors.SRMinutes = "Please enter a valid short rest time.";
     }
 
-    // Validación de los minutos de descanso largo
     if (!LRMinutes || isNaN(LRMinutes) || LRMinutes <= 0) {
       validationErrors.LRMinutes = "Please enter a valid long rest time.";
     }
 
-    // Validación del intervalo de vueltas
     if (!counterLap || isNaN(counterLap) || counterLap <= 0) {
       validationErrors.counterLap = "Please enter a valid lap interval.";
     }
 
-    // Si hay errores, los establece
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
       return;
     }
 
-    // Aquí se actualizan los valores directamente
     setWorkMinutes(workMinutes);
     setSRMinutes(SRMinutes);
     setLRMinutes(LRMinutes);
@@ -99,73 +93,100 @@ const ConfigCounter = () => {
   };
 
   return (
-    <dialog id="config-modal" className="modal" ref={dialogRef}>
-      <div className="modal-box bg-white p-6 rounded-lg shadow-lg max-w-sm mx-auto">
-        <div className="flex flex-row justify-between">
-          <h2 className="text-lg font-semibold mb-4">Configuration</h2>
+    <dialog id="config-modal" className="modal backdrop:backdrop-blur-md backdrop:bg-black/25" ref={dialogRef}>
+      <div className="modal-box bg-[#FDFCFB]/98 text-stone-800 border border-stone-200/80 shadow-2xl p-6 rounded-3xl max-w-sm mx-auto">
+        <div className="flex flex-row items-center justify-between mb-6">
+          <h2 className="text-xl font-semibold tracking-tight">Configuration</h2>
           <button
             type="button"
             onClick={handleResetDefault}
-            className="flex justify-center font-semibold items-center p-3 btn-sm btn-active bg-bgW text-black rounded-md"
+            className="px-3 py-1.5 bg-stone-100 hover:bg-stone-200 text-stone-600 text-xs font-semibold rounded-full transition-all duration-200"
           >
-            Default values
+            Reset Defaults
           </button>
         </div>
 
-        <label htmlFor="user-work" className="block text-sm font-medium text-gray-700">Work</label>
-        <input
-          id="user-work"
-          type="number"
-          value={workMinutes}
-          onChange={(e) => changeWorkHandler(e.target.value)}
-          className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-500 ${errors.workMinutes ? "border-red-500" : "border-gray-300"}`}
-        />
-        {errors.workMinutes && <p className="mt-1 text-red-500 text-sm">{errors.workMinutes}</p>}
+        <div className="flex flex-col gap-4">
+          <div>
+            <label htmlFor="user-work" className="block text-xs font-semibold uppercase tracking-wider text-stone-500 mb-1.5">
+              Work Minutes
+            </label>
+            <input
+              id="user-work"
+              type="number"
+              value={workMinutes}
+              onChange={(e) => changeWorkHandler(e.target.value)}
+              className={`block w-full px-4 py-2.5 bg-stone-100/70 text-stone-800 border rounded-2xl focus:outline-none focus:border-stone-400 transition-all duration-200 text-sm font-medium ${
+                errors.workMinutes ? "border-red-500" : "border-stone-200"
+              }`}
+            />
+            {errors.workMinutes && <p className="mt-1 text-red-500 text-xs">{errors.workMinutes}</p>}
+          </div>
 
-        <label htmlFor="user-SR" className="block text-sm font-medium text-gray-700 mt-4">Short rest</label>
-        <input
-          id="user-SR"
-          type="number"
-          value={SRMinutes}
-          onChange={(e) => changeSRHandler(e.target.value)}
-          className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-500 ${errors.SRMinutes ? "border-red-500" : "border-gray-300"}`}
-        />
-        {errors.SRMinutes && <p className="mt-1 text-red-500 text-sm">{errors.SRMinutes}</p>}
+          <div>
+            <label htmlFor="user-SR" className="block text-xs font-semibold uppercase tracking-wider text-stone-500 mb-1.5">
+              Short Rest Minutes
+            </label>
+            <input
+              id="user-SR"
+              type="number"
+              value={SRMinutes}
+              onChange={(e) => changeSRHandler(e.target.value)}
+              className={`block w-full px-4 py-2.5 bg-stone-100/70 text-stone-800 border rounded-2xl focus:outline-none focus:border-stone-400 transition-all duration-200 text-sm font-medium ${
+                errors.SRMinutes ? "border-red-500" : "border-stone-200"
+              }`}
+            />
+            {errors.SRMinutes && <p className="mt-1 text-red-500 text-xs">{errors.SRMinutes}</p>}
+          </div>
 
-        <label htmlFor="user-LR" className="block text-sm font-medium text-gray-700 mt-4">Long rest</label>
-        <input
-          id="user-LR"
-          type="number"
-          value={LRMinutes}
-          onChange={(e) => changeLRHandler(e.target.value)}
-          className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-500 ${errors.LRMinutes ? "border-red-500" : "border-gray-300"}`}
-        />
-        {errors.LRMinutes && <p className="mt-1 text-red-500 text-sm">{errors.LRMinutes}</p>}
+          <div>
+            <label htmlFor="user-LR" className="block text-xs font-semibold uppercase tracking-wider text-stone-500 mb-1.5">
+              Long Rest Minutes
+            </label>
+            <input
+              id="user-LR"
+              type="number"
+              value={LRMinutes}
+              onChange={(e) => changeLRHandler(e.target.value)}
+              className={`block w-full px-4 py-2.5 bg-stone-100/70 text-stone-800 border rounded-2xl focus:outline-none focus:border-stone-400 transition-all duration-200 text-sm font-medium ${
+                errors.LRMinutes ? "border-red-500" : "border-stone-200"
+              }`}
+            />
+            {errors.LRMinutes && <p className="mt-1 text-red-500 text-xs">{errors.LRMinutes}</p>}
+          </div>
 
-        <label htmlFor="counter-lap" className="block text-sm font-medium text-gray-700 mt-4">Long break interval</label>
-        <input
-          id="counter-lap"
-          type="number"
-          value={initialCounterLap}
-          onChange={(e) => changeLapHandler(e.target.value)}
-          className={`mt-1 block w-full px-3 py-2 border rounded-md shadow-sm focus:outline-none focus:ring focus:ring-blue-500 ${errors.counterLap ? "border-red-500" : "border-gray-300"}`}
-        />
-        {errors.counterLap && <p className="mt-1 text-red-500 text-sm">{errors.counterLap}</p>}
+          <div>
+            <label htmlFor="counter-lap" className="block text-xs font-semibold uppercase tracking-wider text-stone-500 mb-1.5">
+              Long Rest Interval (Laps)
+            </label>
+            <input
+              id="counter-lap"
+              type="number"
+              value={initialCounterLap}
+              onChange={(e) => changeLapHandler(e.target.value)}
+              className={`block w-full px-4 py-2.5 bg-stone-100/70 text-stone-800 border rounded-2xl focus:outline-none focus:border-stone-400 transition-all duration-200 text-sm font-medium ${
+                errors.counterLap ? "border-red-500" : "border-stone-200"
+              }`}
+            />
+            {errors.counterLap && <p className="mt-1 text-red-500 text-xs">{errors.counterLap}</p>}
+          </div>
+        </div>
 
-        <div className="modal-action flex justify-end gap-4 mt-6">
-          <button
-            type="button"
-            onClick={handleAccept}
-            className="btn bg-secondary text-black px-4 py-2 rounded-md"
-          >
-            Accept
-          </button>
+        <div className="modal-action flex justify-end gap-3 mt-8">
           <button
             type="button"
             onClick={handleCancel}
-            className="btn bg-primary text-black px-4 py-2 rounded-md"
+            className="px-4 py-2 text-xs font-semibold rounded-full bg-stone-100 hover:bg-stone-200 text-stone-600 transition-all duration-200"
           >
             Cancel
+          </button>
+          
+          <button
+            type="button"
+            onClick={handleAccept}
+            className="px-5 py-2 text-xs font-semibold rounded-full bg-stone-800 hover:bg-stone-900 text-white transition-all duration-200 shadow-md shadow-stone-800/10"
+          >
+            Save Changes
           </button>
         </div>
       </div>

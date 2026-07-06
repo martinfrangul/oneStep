@@ -7,40 +7,44 @@ import TaskPanel from "./components/TaskPanel";
 import { CounterContextProvider } from "./context/CounterContext";
 import ConfigCounter from "./components/ConfigCounter";
 import CompletedTasks from "./components/CompletedTasks";
-import ConfigCounterButton from "./components/buttons/ConfigCounterButton";
-import CompletedTasksButton from "./components/buttons/CompletedTasksButton";
-import SoundToggleButton from "./components/buttons/SoundToggleButton";
 import { AlertContextProvider } from "./context/AlertContext";
 
 const App = () => {
   return (
     <TasksDataProvider>
-      <CounterContextProvider>
-        <ConfigCounter />
-        <CompletedTasks />
+      <AlertContextProvider>
+        <CounterContextProvider>
+          <ConfigCounter />
+          <CompletedTasks />
 
-        <div className="flex flex-col justify-start items-center w-full min-h-screen bg-backgroundSM xl:bg-backgroundLG bg-cover bg-repeat-y bg-center">
-          <Navbar />
-          <div className="flex flex-col lg:flex-row w-full h-full justify-between">
-            <div className="flex flex-col lg:w-6/12 h-full justify-start items-center gap-3">
-              <AlertContextProvider>
-                <Counter />
-
-                <div className="flex w-full justify-center items-center gap-4">
-                  <ConfigCounterButton />
-                  <CompletedTasksButton />
-                  <SoundToggleButton />
+          <div className="flex flex-col min-h-screen w-full transition-all duration-300">
+            <Navbar />
+            
+            <main className="flex-grow flex flex-col items-center justify-start py-8 px-4 md:px-12 max-w-5xl mx-auto w-full gap-8">
+              {/* Grid Layout for Timer and Tasks */}
+              <div className="w-full flex flex-col lg:flex-row gap-8 items-start justify-center mt-4">
+                
+                {/* Timer & Task Creator Section */}
+                <div className="w-full lg:w-1/2 flex flex-col items-center gap-6">
+                  <Counter />
+                  <TaskManager />
                 </div>
-              </AlertContextProvider>
 
-              <TaskManager />
-            </div>
-            <div className="flex justify-center lg:items-start w-10/12 md:w-6/12 pt-5 lg:pt-14 lg:m-0 m-auto">
-              <TaskPanel />
-            </div>
+                {/* Tasks List Panel */}
+                <div className="w-full lg:w-1/2 flex flex-col gap-6">
+                  <div className="p-6 rounded-3xl bg-theme-card border border-theme-ui/30 shadow-2xl transition-all duration-300">
+                    <h2 className="text-xl font-semibold mb-4 tracking-tight">
+                      Focus Checklist
+                    </h2>
+                    <TaskPanel />
+                  </div>
+                </div>
+
+              </div>
+            </main>
           </div>
-        </div>
-      </CounterContextProvider>
+        </CounterContextProvider>
+      </AlertContextProvider>
     </TasksDataProvider>
   );
 };

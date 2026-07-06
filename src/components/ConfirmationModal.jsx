@@ -27,33 +27,29 @@ const ConfirmationModal = ({ completedTasksDialogRef }) => {
   };
 
   return (
-    <dialog id="confirmation-modal" className="modal" ref={dialogRef}>
-      <div className="modal-box bg-btnControl p-6 rounded-lg shadow-lg max-w-sm mx-auto">
-        <div className="flex flex-col justify-start">
-          <div className="w-full">
-            <h2 className="text-lg font-semibold mb-4">
-              Are you sure you want to clean your tasks history
-            </h2>
-          </div>
-          <div className="w-full">
-            <h3 className="text-md mb-4">This action cannot be undone.</h3>
-          </div>
-        </div>
-        <div className="modal-action flex justify-end gap-4 mt-6">
-        <div>
-          <button
-            onClick={onCleanCompletedTasks}
-            className="btn text-bgSM outline"
-          >
-            Clean list
-          </button>
-        </div>
+    <dialog id="confirmation-modal" className="modal backdrop:backdrop-blur-md backdrop:bg-black/25" ref={dialogRef}>
+      <div className="modal-box bg-[#FDFCFB]/98 text-stone-800 border border-stone-200/80 shadow-2xl p-6 rounded-3xl max-w-sm mx-auto">
+        <h2 className="text-lg font-semibold tracking-tight mb-2">
+          Clear tasks history?
+        </h2>
+        <p className="text-sm text-stone-500 mb-6">
+          This action will permanently delete your list of completed tasks and cannot be undone.
+        </p>
+        
+        <div className="modal-action flex justify-end gap-3">
           <button
             type="button"
             onClick={handleCancel}
-            className="btn bg-primary text-black px-4 py-2 rounded-md"
+            className="px-4 py-2 text-xs font-semibold rounded-full bg-stone-100 hover:bg-stone-200 text-stone-600 transition-all duration-200"
           >
             Cancel
+          </button>
+          
+          <button
+            onClick={onCleanCompletedTasks}
+            className="px-4 py-2 text-xs font-semibold rounded-full bg-red-500 text-white hover:bg-red-600 shadow-md shadow-red-500/10 transition-all duration-200"
+          >
+            Yes, Clear
           </button>
         </div>
       </div>
@@ -64,7 +60,7 @@ const ConfirmationModal = ({ completedTasksDialogRef }) => {
 ConfirmationModal.propTypes = {
   completedTasksDialogRef: PropTypes.shape({
     current: PropTypes.instanceOf(Element)
-  }).isRequired, // Asegurarse que sea un objeto con una referencia actual
+  }).isRequired,
 };
 
 export default ConfirmationModal;

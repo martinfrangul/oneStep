@@ -1,16 +1,16 @@
 import { useState, useContext } from 'react';
-import { PlusIcon } from 'lucide-react'
+import { Plus } from 'lucide-react'
 import { TasksData } from '../context/TasksData';
 
 const TaskManager = () => {
   const [newTask, setNewTask] = useState("");
-
-  const context = useContext(TasksData)
-
+  const context = useContext(TasksData);
   const { tasks, setTasks } = context;
 
+  const activeTasksCount = tasks.filter(task => !task.completed).length;
+
   const addTask = () => {
-    if (newTask.trim() !== '' && tasks.filter(task => !task.completed).length < 5) {
+    if (newTask.trim() !== '' && activeTasksCount < 5) {
       setTasks([...tasks, { id: Date.now(), text: newTask, completed: false }])
       setNewTask('')
     }
@@ -19,34 +19,43 @@ const TaskManager = () => {
   // ADD TASK WITH ENTER KEY
   const handleKeyPress = (e) => {
     if (e.key === "Enter") {
-      addTask(); // Llamar a la función addTask si se presiona Enter
+      addTask();
     }
   };
 
   return (
-    <div className="max-w-[20rem] p-6 bg-secondary rounded-lg shadow-lg transform transition-all duration-300">
-      <h1 className="text-3xl font-bold text-textLogo mb-6 text-center">Tasks</h1>
-      <div className="flex mb-6">
-        <input
-          type="text"
-          value={newTask}
-          onChange={(e) => setNewTask(e.target.value)}
-          onKeyDown={handleKeyPress}
-          placeholder="New task"
-          className="flex-grow p-3 rounded-l-lg bg-gray-700 text-btnControl font-semibold focus:outline-none"
-        />
-        <button 
-          onClick={addTask}
-          disabled={tasks.filter(task => !task.completed).length >= 5}
-          className={`p-3 rounded-r-lg bg-btnControl text-gray-100 transition-colors duration-300 
-            ${tasks.filter(task => !task.completed).length >= 5 ? 'cursor-not-allowed opacity-50' : 'hover:bg-yellow-200'}`}
-        >
-          <PlusIcon className="h-5 w-5 text-textLogo" />
-        </button>
+    <div className="w-full max-w-md p-6 bg-theme-card border border-theme-ui/30 rounded-3xl shadow-2xl transition-all duration-300">
+      <div className="flex flex-col gap-4">
+        <label htmlFor="task-input" className="text-sm font-medium opacity-80">
+          Add Task
+        </label>
+        
+        <div className="flex shadow-sm rounded-2xl overflow-hidden border border-theme-ui/40 focus-within:border-theme-accent/60 transition-all duration-200">
+          <input
+            id="task-input"
+            type="text"
+            value={newTask}
+            onChange={(e) => setNewTask(e.target.value)}
+            onKeyDown={handleKeyPress}
+            placeholder="What are you working on?"
+            className="flex-grow px-4 py-3 bg-white text-gray-900 placeholder-gray-400 focus:outline-none text-sm font-medium"
+          />
+          <button 
+            onClick={addTask}
+            disabled={activeTasksCount >= 5}
+            className={`px-4 bg-[var(--theme-bg)] text-[var(--theme-text)] border-l border-theme-ui/40 transition-all duration-200 flex items-center justify-center
+              ${activeTasksCount >= 5 ? 'cursor-not-allowed opacity-50' : 'hover:bg-theme-ui/40 active:scale-95'}`}
+            aria-label="Add new task"
+          >
+            <Plus className="h-5 w-5" />
+          </button>
+        </div>
+        
+        <div className="flex justify-between items-center text-xs opacity-60 font-medium">
+          <span>Limit 5 active tasks</span>
+          <span>{activeTasksCount} of 5 active</span>
+        </div>
       </div>
-      <p className="mt-6 text-sm text-center  text-textLogo">
-        Active tasks: {tasks.filter(task => !task.completed).length}/5
-      </p>
     </div>
   )
 }

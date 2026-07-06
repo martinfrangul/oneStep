@@ -1,15 +1,132 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* Theme Definitions */
+[data-theme="cream"] {
+  --theme-bg: #FDFBF7;
+  --theme-text: #433F38;
+  --theme-candle: #E7A9A4;
+  --theme-accent: #E05E54;
+  --theme-card-bg: rgba(246, 241, 232, 0.7);
+  --theme-btn-bg: #EBE6DC;
+  --theme-btn-hover: #E0DACD;
+  --theme-shadow: 0 10px 30px -10px rgba(67, 63, 56, 0.08);
+}
+
+[data-theme="slate"] {
+  --theme-bg: #1E2021;
+  --theme-text: #EBDBB2;
+  --theme-candle: #8EA3A3;
+  --theme-accent: #E78A4E;
+  --theme-card-bg: rgba(40, 40, 40, 0.55);
+  --theme-btn-bg: #32302F;
+  --theme-btn-hover: #504945;
+  --theme-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme="sage"] {
+  --theme-bg: #F4F5F0;
+  --theme-text: #354538;
+  --theme-candle: #DCAFA6;
+  --theme-accent: #5C7A60;
+  --theme-card-bg: rgba(229, 232, 224, 0.7);
+  --theme-btn-bg: #E3E5DC;
+  --theme-btn-hover: #D3D6CB;
+  --theme-shadow: 0 10px 30px -10px rgba(53, 69, 56, 0.08);
+}
+
+[data-theme="lavender"] {
+  --theme-bg: #F5F3F7;
+  --theme-text: #4A3C52;
+  --theme-candle: #A6C2B4;
+  --theme-accent: #9B7EAA;
+  --theme-card-bg: rgba(235, 231, 239, 0.7);
+  --theme-btn-bg: #E6E1EC;
+  --theme-btn-hover: #D6CFDF;
+  --theme-shadow: 0 10px 30px -10px rgba(74, 60, 82, 0.08);
+}
 
 :root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', 'Outfit', sans-serif;
+  background-color: var(--theme-bg);
+  color: var(--theme-text);
+  transition: background-color 0.5s ease, color 0.5s ease;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+/* Custom Minimalist Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--theme-btn-bg);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--theme-btn-hover);
+}
+
+
+
+.btn {
+  background-color: var(--theme-btn-bg) !important;
+  color: var(--theme-text) !important;
+  border: none !important;
+  text-transform: none !important;
+  font-weight: 500 !important;
+  transition: all 0.2s ease !important;
+}
+
+.btn:hover {
+  background-color: var(--theme-btn-hover) !important;
+}
+
+/* Tailwind utility mappings for easy usage */
+.bg-theme-card {
+  background-color: var(--theme-card-bg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.bg-theme-accent {
+  background-color: var(--theme-accent);
+}
+
+.bg-theme-ui {
+  background-color: var(--theme-btn-bg);
+}
+
+.border-theme-ui {
+  border-color: var(--theme-btn-bg);
+}
+
+.text-theme-accent {
+  color: var(--theme-accent);
+}
+
+.text-theme-text {
+  color: var(--theme-text);
+}
+
+.text-theme-candle {
+  color: var(--theme-candle);
 }

@@ -15,47 +15,50 @@ const CompletedTasks = () => {
   };
 
   return (
-    <dialog id="completed-tasks-modal" className="modal" ref={dialogRef}>
-      <div className="modal-box bg-primary p-0 rounded-2xl shadow-lg max-w-sm mx-auto border-[8px] border-primary border-solid overflow-y-auto overflow-hidden">
-        <div className="flex flex-row justify-between ">
-          <h2 className="text-lg text-center w-full font-semibold p-6">
-            Latest completed tasks
-          </h2>
-        </div>
-        <div className="p-6 gap-3 bg-white">
+    <dialog id="completed-tasks-modal" className="modal backdrop:backdrop-blur-md backdrop:bg-black/25" ref={dialogRef}>
+      <div className="modal-box bg-[#FDFCFB]/98 text-stone-800 border border-stone-200/80 shadow-2xl p-6 rounded-3xl max-w-sm mx-auto">
+        <h2 className="text-xl font-semibold mb-4 tracking-tight">
+          Completed Tasks
+        </h2>
+        
+        <div className="flex flex-col gap-2 max-h-60 overflow-y-auto my-4 pr-1">
           {completedTasks.length !== 0 ? (
             completedTasks.slice(-8).map((task, index) => (
               <div
-                className="flex flex-row items-center gap-2 font-semibold text-xl p-1 border-b-[0.5px] borde-solid border-black"
+                className="py-2.5 px-1 border-b border-stone-100 text-sm font-medium text-stone-600"
                 key={index}
               >
-                <h1>{task.text}</h1>
+                {task.text}
               </div>
             ))
           ) : (
-            <h1 className="italic text-center p-6 bg-white">No completed tasks yet</h1>
+            <div className="italic text-center py-6 text-sm text-stone-400">
+              No completed tasks yet
+            </div>
           )}
         </div>
-        <div className="modal-action mt-1 flex justify-end gap-4 p-6 bg-white">
+        
+        <div className="modal-action flex justify-between gap-4 mt-6">
           <button
-            className="btn border-2 border-bgLR bg-transparent text-red-500 hover:bg-opacity-50"
+            className="px-4 py-2 rounded-full border border-red-500/20 text-red-500 hover:bg-red-500/10 text-xs font-semibold disabled:opacity-40 disabled:cursor-not-allowed transition-all duration-200"
             onClick={() =>
               document.getElementById("confirmation-modal").showModal()
             }
             disabled={completedTasks.length === 0}
           >
-            Delete all
+            Clear History
           </button>
+          
           <button
             type="button"
             onClick={handleClose}
-            className="btn text-black px-4 py-2 rounded-md border-1 border-black"
+            className="px-5 py-2 text-xs font-semibold rounded-full bg-stone-100 hover:bg-stone-200 text-stone-600 transition-all duration-200"
           >
             Close
           </button>
-
-          <ConfirmationModal completedTasksDialogRef={dialogRef} />
         </div>
+        
+        <ConfirmationModal completedTasksDialogRef={dialogRef} />
       </div>
     </dialog>
   );
