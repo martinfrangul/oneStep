@@ -65,7 +65,7 @@ const VisualTimer = ({ mode, minutes, seconds, totalMinutes, playPause }) => {
   };
 
   return (
-    <div className="w-full max-w-[220px] h-[220px] flex items-center justify-center mx-auto my-4 select-none">
+    <div className="w-full max-w-[150px] h-[150px] sm:max-w-[220px] sm:h-[220px] flex items-center justify-center mx-auto my-2 sm:my-4 select-none">
       <svg
         viewBox="0 0 200 200"
         className="w-full h-full"

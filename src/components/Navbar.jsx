@@ -12,7 +12,7 @@ const Navbar = () => {
   const setSoundToggle = alertCtx ? alertCtx.setSoundToggle : () => {};
 
   return (
-    <header className="w-full flex items-center justify-between px-6 md:px-12 py-5 bg-transparent border-b border-theme-ui/10">
+    <header className="w-full flex items-center justify-between px-4 sm:px-6 md:px-12 py-3 sm:py-5 bg-transparent border-b border-theme-ui/10">
       {/* Brand Title */}
       <div className="flex items-center gap-2">
         <span className="text-2xl font-semibold tracking-tight font-sans">

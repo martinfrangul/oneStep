@@ -23,9 +23,9 @@ const App = () => {
           <div className="flex flex-col min-h-screen w-full transition-all duration-300">
             <Navbar />
             
-            <main className="flex-grow flex flex-col items-center justify-start py-8 px-4 md:px-12 max-w-5xl mx-auto w-full gap-8">
+            <main className="flex-grow flex flex-col items-center justify-start py-4 sm:py-8 px-4 md:px-12 max-w-5xl mx-auto w-full gap-4 sm:gap-8">
               {/* Grid Layout for Timer and Tasks */}
-              <div className="w-full flex flex-col lg:flex-row gap-8 items-start justify-center mt-4">
+              <div className="w-full flex flex-col lg:flex-row gap-4 sm:gap-8 items-start justify-center mt-2 sm:mt-4">
                 
                 {/* Timer Section (Left column on desktop) */}
                 <div className="w-full lg:w-1/2 flex flex-col items-center">
@@ -34,7 +34,7 @@ const App = () => {
 
                 {/* Unified Focus Checklist Card (Right column on desktop) */}
                 <div className="w-full lg:w-1/2 flex flex-col gap-6">
-                  <div className="p-6 rounded-3xl bg-theme-card border border-theme-ui/30 shadow-2xl transition-all duration-300">
+                  <div className="p-4 sm:p-6 rounded-3xl bg-theme-card border border-theme-ui/30 shadow-2xl transition-all duration-300">
                     <h2 className="text-xl font-semibold mb-4 tracking-tight">
                       Focus Checklist
                     </h2>
