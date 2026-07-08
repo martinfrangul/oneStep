@@ -117,8 +117,63 @@ const VisualTimer = ({ mode, minutes, seconds, totalMinutes, playPause }) => {
               fill="currentColor"
               stroke="currentColor"
               strokeWidth="3"
-              className="text-theme-candle transition-all duration-300"
+              className="text-theme-candle"
               style={{ stroke: "var(--theme-text)" }}
+            />
+
+            {/* Candle Top Melted Pool (cylinder top surface detail) */}
+            <motion.ellipse
+              cx="100"
+              cy={candleY}
+              rx="17"
+              ry="3.5"
+              fill="var(--theme-text)"
+              opacity="0.12"
+              className="pointer-events-none"
+            />
+
+            {/* Candle Body Highlight (vertical light shine on left) */}
+            <motion.rect
+              x="86"
+              y={candleY + 3}
+              width="3"
+              height={Math.max(0, candleHeight - 6)}
+              rx="1.5"
+              fill="#FFFFFF"
+              opacity="0.25"
+              className="pointer-events-none"
+            />
+
+            {/* Candle Body Shadow (vertical depth shadow on right) */}
+            <motion.rect
+              x="111"
+              y={candleY + 3}
+              width="3"
+              height={Math.max(0, candleHeight - 6)}
+              rx="1.5"
+              fill="var(--theme-text)"
+              opacity="0.12"
+              className="pointer-events-none"
+            />
+
+            {/* Left Wax Drip */}
+            <motion.path
+              d={`M 88 ${candleY} v 12 c 0 2, 3 2, 3 0 v -12`}
+              fill="currentColor"
+              stroke="var(--theme-text)"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              className="text-theme-candle"
+            />
+
+            {/* Right Wax Drip */}
+            <motion.path
+              d={`M 108 ${candleY} v 7 c 0 1.5, 2.5 1.5, 2.5 0 v -7`}
+              fill="currentColor"
+              stroke="var(--theme-text)"
+              strokeWidth="2.5"
+              strokeLinecap="round"
+              className="text-theme-candle"
             />
 
             {/* Wick */}
@@ -159,6 +214,12 @@ const VisualTimer = ({ mode, minutes, seconds, totalMinutes, playPause }) => {
                   d={`M 100 ${candleY - 21} C 96 ${candleY - 15}, 96 ${candleY - 10}, 100 ${candleY - 10} C 104 ${candleY - 10}, 104 ${candleY - 15}, 100 ${candleY - 21} Z`}
                   fill="#FFF"
                   className="opacity-95"
+                />
+                {/* Flame Blue Base Core */}
+                <path
+                  d={`M 100 ${candleY - 13} C 97.5 ${candleY - 13}, 97.5 ${candleY - 9}, 100 ${candleY - 9} C 102.5 ${candleY - 9}, 102.5 ${candleY - 13}, 100 ${candleY - 13} Z`}
+                  fill="#38bdf8"
+                  className="opacity-80"
                 />
               </motion.g>
             )}
