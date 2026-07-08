@@ -16,7 +16,7 @@ const Navbar = () => {
       {/* Brand Title */}
       <div className="flex items-center gap-2">
         <span className="text-2xl font-semibold tracking-tight font-sans">
-          oneStep<span className="text-theme-accent font-bold">.</span>
+          onestepomodoro<span className="text-theme-accent font-bold">.</span>
         </span>
       </div>
 
