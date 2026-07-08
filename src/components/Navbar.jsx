@@ -24,14 +24,12 @@ const Navbar = () => {
       <div className="flex items-center gap-6">
         {/* Custom Color Selector */}
         <div className="relative w-8 h-8 flex items-center justify-center bg-theme-ui/35 rounded-full p-1 shadow-sm">
-          <button
-            onClick={() => document.getElementById("custom-color-picker").click()}
-            className="w-6 h-6 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-inner bg-gradient-to-tr from-red-400 via-green-400 to-blue-400"
+          <div
+            className="w-6 h-6 rounded-full flex items-center justify-center transition-all duration-300 hover:scale-110 shadow-inner bg-gradient-to-tr from-red-400 via-green-400 to-blue-400 pointer-events-none"
             title="Choose custom background color"
-            aria-label="Choose custom color"
           >
-            <Palette className="h-3 w-3 text-white" />
-          </button>
+            <Palette className="h-3.5 w-3.5 text-white" />
+          </div>
           <input
             id="custom-color-picker"
             type="color"
@@ -40,7 +38,8 @@ const Navbar = () => {
               setTheme("custom");
               setCustomColor(e.target.value);
             }}
-            className="absolute inset-0 opacity-0 w-full h-full cursor-pointer pointer-events-none"
+            className="absolute inset-0 opacity-0 w-full h-full cursor-pointer z-10"
+            aria-label="Choose custom color"
           />
         </div>
 

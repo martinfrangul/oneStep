@@ -442,12 +442,32 @@ const VisualTimer = ({ mode, minutes, seconds, totalMinutes, playPause }) => {
 
             {/* Tea bag string & tag (loops over the rim) */}
             <path
-              d="M 88 105 Q 78 90 70 102 L 64 118"
+              d="M 96 125 Q 78 90 70 102 L 64 118"
               fill="none"
               stroke="currentColor"
               strokeWidth="1.5"
               className="text-theme-text opacity-70"
             />
+            {/* Tea bag (saquito) hanging inside the cup */}
+            <polygon
+              points="90,125 102,125 105,129 105,147 87,147 87,129"
+              fill="#F4EFE6"
+              stroke="var(--theme-text)"
+              strokeWidth="1.5"
+              strokeLinejoin="round"
+              opacity="0.5"
+            />
+            {/* Small staple/metal clip at the top of the tea bag */}
+            <line
+              x1="95"
+              y1="126"
+              x2="97"
+              y2="126"
+              stroke="var(--theme-text)"
+              strokeWidth="1.5"
+              opacity="0.5"
+            />
+            {/* Tea bag tag (outside the cup) */}
             <rect
               x="60"
               y="118"

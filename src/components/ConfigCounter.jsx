@@ -59,8 +59,8 @@ const ConfigCounter = () => {
       validationErrors.LRMinutes = "Please enter a valid long rest time.";
     }
 
-    if (!counterLap || isNaN(counterLap) || counterLap <= 0) {
-      validationErrors.counterLap = "Please enter a valid lap interval.";
+    if (!initialCounterLap || isNaN(initialCounterLap) || initialCounterLap < 1 || initialCounterLap > 8) {
+      validationErrors.counterLap = "El número de vueltas debe estar entre 1 y 8.";
     }
 
     if (Object.keys(validationErrors).length > 0) {
@@ -71,8 +71,8 @@ const ConfigCounter = () => {
     setWorkMinutes(workMinutes);
     setSRMinutes(SRMinutes);
     setLRMinutes(LRMinutes);
-    setCounterLap(counterLap);
-    setInitialCounterLap(counterLap);
+    setCounterLap(initialCounterLap);
+    setInitialCounterLap(initialCounterLap);
     setErrors({});
     stopPreview();
 
@@ -116,7 +116,31 @@ const ConfigCounter = () => {
   };
 
   const changeLapHandler = (value) => {
-    setCounterLap(value === "" ? "" : parseInt(value));
+    if (value === "") {
+      setInitialCounterLap("");
+      setErrors((prev) => ({
+        ...prev,
+        counterLap: "El número de vueltas debe estar entre 1 y 8.",
+      }));
+      return;
+    }
+    const num = parseInt(value);
+    if (isNaN(num)) return;
+    setInitialCounterLap(num);
+
+    if (num > 8) {
+      setErrors((prev) => ({
+        ...prev,
+        counterLap: "El máximo de vueltas permitido es 8 (se corregirá a 8 automáticamente al salir).",
+      }));
+    } else if (num < 1) {
+      setErrors((prev) => ({
+        ...prev,
+        counterLap: "El mínimo de vueltas permitido es 1 (se corregirá a 1 automáticamente al salir).",
+      }));
+    } else {
+      setErrors((prev) => ({ ...prev, counterLap: null }));
+    }
   };
 
   return (
@@ -189,9 +213,20 @@ const ConfigCounter = () => {
             <input
               id="counter-lap"
               type="number"
+              min="1"
+              max="8"
               value={initialCounterLap}
               onChange={(e) => changeLapHandler(e.target.value)}
-              className={`block w-full px-4 py-2.5 bg-stone-100/70 text-stone-800 border rounded-2xl focus:outline-none focus:border-stone-400 transition-all duration-200 text-sm font-medium ${
+              onBlur={() => {
+                if (!initialCounterLap || initialCounterLap < 1) {
+                  setInitialCounterLap(1);
+                  setErrors((prev) => ({ ...prev, counterLap: null }));
+                } else if (initialCounterLap > 8) {
+                  setInitialCounterLap(8);
+                  setErrors((prev) => ({ ...prev, counterLap: null }));
+                }
+              }}
+              className={`block w-full px-4 py-2.5 bg-stone-100/70 text-stone-800 border rounded-2xl focus:outline-none focus:border-stone-400 transition-all duration-200 text-sm font-medium no-spinner ${
                 errors.counterLap ? "border-red-500" : "border-stone-200"
               }`}
             />
