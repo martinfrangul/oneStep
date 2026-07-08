@@ -60,7 +60,7 @@ const ConfigCounter = () => {
     }
 
     if (!initialCounterLap || isNaN(initialCounterLap) || initialCounterLap < 1 || initialCounterLap > 8) {
-      validationErrors.counterLap = "El número de vueltas debe estar entre 1 y 8.";
+      validationErrors.counterLap = "Laps must be between 1 and 8.";
     }
 
     if (Object.keys(validationErrors).length > 0) {
@@ -118,29 +118,13 @@ const ConfigCounter = () => {
   const changeLapHandler = (value) => {
     if (value === "") {
       setInitialCounterLap("");
-      setErrors((prev) => ({
-        ...prev,
-        counterLap: "El número de vueltas debe estar entre 1 y 8.",
-      }));
+      setErrors((prev) => ({ ...prev, counterLap: null }));
       return;
     }
     const num = parseInt(value);
     if (isNaN(num)) return;
     setInitialCounterLap(num);
-
-    if (num > 8) {
-      setErrors((prev) => ({
-        ...prev,
-        counterLap: "El máximo de vueltas permitido es 8 (se corregirá a 8 automáticamente al salir).",
-      }));
-    } else if (num < 1) {
-      setErrors((prev) => ({
-        ...prev,
-        counterLap: "El mínimo de vueltas permitido es 1 (se corregirá a 1 automáticamente al salir).",
-      }));
-    } else {
-      setErrors((prev) => ({ ...prev, counterLap: null }));
-    }
+    setErrors((prev) => ({ ...prev, counterLap: null }));
   };
 
   return (
@@ -167,7 +151,7 @@ const ConfigCounter = () => {
               type="number"
               value={workMinutes}
               onChange={(e) => changeWorkHandler(e.target.value)}
-              className={`block w-full px-4 py-2.5 bg-stone-100/70 text-stone-800 border rounded-2xl focus:outline-none focus:border-stone-400 transition-all duration-200 text-sm font-medium ${
+              className={`block w-full px-4 py-2.5 bg-stone-100/70 text-stone-800 border rounded-2xl focus:outline-none focus:border-stone-400 transition-all duration-200 text-base sm:text-sm font-medium no-spinner ${
                 errors.workMinutes ? "border-red-500" : "border-stone-200"
               }`}
             />
@@ -183,7 +167,7 @@ const ConfigCounter = () => {
               type="number"
               value={SRMinutes}
               onChange={(e) => changeSRHandler(e.target.value)}
-              className={`block w-full px-4 py-2.5 bg-stone-100/70 text-stone-800 border rounded-2xl focus:outline-none focus:border-stone-400 transition-all duration-200 text-sm font-medium ${
+              className={`block w-full px-4 py-2.5 bg-stone-100/70 text-stone-800 border rounded-2xl focus:outline-none focus:border-stone-400 transition-all duration-200 text-base sm:text-sm font-medium no-spinner ${
                 errors.SRMinutes ? "border-red-500" : "border-stone-200"
               }`}
             />
@@ -199,7 +183,7 @@ const ConfigCounter = () => {
               type="number"
               value={LRMinutes}
               onChange={(e) => changeLRHandler(e.target.value)}
-              className={`block w-full px-4 py-2.5 bg-stone-100/70 text-stone-800 border rounded-2xl focus:outline-none focus:border-stone-400 transition-all duration-200 text-sm font-medium ${
+              className={`block w-full px-4 py-2.5 bg-stone-100/70 text-stone-800 border rounded-2xl focus:outline-none focus:border-stone-400 transition-all duration-200 text-base sm:text-sm font-medium no-spinner ${
                 errors.LRMinutes ? "border-red-500" : "border-stone-200"
               }`}
             />
@@ -218,15 +202,17 @@ const ConfigCounter = () => {
               value={initialCounterLap}
               onChange={(e) => changeLapHandler(e.target.value)}
               onBlur={() => {
-                if (!initialCounterLap || initialCounterLap < 1) {
+                if (initialCounterLap === "" || initialCounterLap < 1) {
                   setInitialCounterLap(1);
-                  setErrors((prev) => ({ ...prev, counterLap: null }));
+                  setErrors((prev) => ({ ...prev, counterLap: "Laps must be between 1 and 8." }));
                 } else if (initialCounterLap > 8) {
                   setInitialCounterLap(8);
+                  setErrors((prev) => ({ ...prev, counterLap: "Laps must be between 1 and 8." }));
+                } else {
                   setErrors((prev) => ({ ...prev, counterLap: null }));
                 }
               }}
-              className={`block w-full px-4 py-2.5 bg-stone-100/70 text-stone-800 border rounded-2xl focus:outline-none focus:border-stone-400 transition-all duration-200 text-sm font-medium no-spinner ${
+              className={`block w-full px-4 py-2.5 bg-stone-100/70 text-stone-800 border rounded-2xl focus:outline-none focus:border-stone-400 transition-all duration-200 text-base sm:text-sm font-medium no-spinner ${
                 errors.counterLap ? "border-red-500" : "border-stone-200"
               }`}
             />
@@ -260,7 +246,7 @@ const ConfigCounter = () => {
                   }
                 }, 3000);
               }}
-              className="block w-full px-4 py-2.5 bg-stone-100/70 text-stone-800 border border-stone-200 rounded-2xl focus:outline-none focus:border-stone-400 transition-all duration-200 text-sm font-medium cursor-pointer"
+              className="block w-full px-4 py-2.5 bg-stone-100/70 text-stone-800 border border-stone-200 rounded-2xl focus:outline-none focus:border-stone-400 transition-all duration-200 text-base sm:text-sm font-medium cursor-pointer"
             >
               <option value="bell">🛎️ Classic Bell</option>
               <option value="chimes">🔔 Tibetan Bell</option>

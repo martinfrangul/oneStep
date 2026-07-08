@@ -59,7 +59,7 @@ const TaskPanel = () => {
                 <div className="flex items-center gap-2 flex-shrink-0">
                   <button
                     onClick={() => completeTask(task.id)}
-                    className="p-2 rounded-full bg-theme-accent/10 hover:bg-theme-accent text-theme-accent hover:text-[var(--theme-bg)] transition-all duration-200"
+                    className="p-2 rounded-full bg-green-500/10 hover:bg-green-500 text-green-500 hover:text-white transition-all duration-200"
                     title="Complete task"
                     aria-label="Complete task"
                   >

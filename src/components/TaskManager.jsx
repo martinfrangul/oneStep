@@ -37,7 +37,7 @@ const TaskManager = ({ inline = false }) => {
           onChange={(e) => setNewTask(e.target.value)}
           onKeyDown={handleKeyPress}
           placeholder="What are you working on?"
-          className="flex-grow px-4 py-3 bg-white text-gray-900 placeholder-gray-400 focus:outline-none text-sm font-medium"
+          className="flex-grow px-4 py-3 bg-white text-gray-900 placeholder-gray-400 focus:outline-none text-base sm:text-sm font-medium"
         />
         <button 
           onClick={addTask}
